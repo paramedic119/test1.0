@@ -280,6 +280,123 @@
         .check-multi-btn:hover {
             opacity: 0.9;
         }
+        
+        /* 成績ダッシュボードのスタイル */
+        .dashboard {
+            margin-top: 25px;
+            padding: 20px;
+            background-color: #e8f5e9; /* 薄い緑色で学習進捗を表現 */
+            border-radius: 12px;
+            border: 1px solid #c8e6c9;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .dashboard h2 {
+            font-size: 1.1rem;
+            color: #388e3c; /* 濃い緑色 */
+            border-bottom: 2px solid #a5d6a7;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+        .score-summary {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .score-summary p {
+            font-size: 0.95rem;
+            margin: 5px 0;
+        }
+        .score-value {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #388e3c;
+            display: block;
+            line-height: 1.1;
+        }
+
+        /* 分野別正答率リスト */
+        .category-scores {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+        .category-scores li {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed #e0e0e0;
+        }
+        .category-scores li:last-child {
+            border-bottom: none;
+        }
+        .category-scores .category-name {
+            font-weight: 500;
+        }
+        .category-scores .rate {
+            font-weight: bold;
+            color: #1a73e8; /* 青色で強調 */
+        }
+
+        /* スコアが低い場合の警告色 */
+        .category-scores .rate.low {
+            color: #e76f51; /* 赤オレンジ色 */
+        }
+        
+        /* --- レスポンシブ対応 (Media Query) --- */
+        @media (max-width: 550px) {
+            body {
+                padding: 10px; /* パディングを減らす */
+            }
+            .card {
+                padding: 20px 15px; /* カードのパディングを減らす */
+                border-radius: 0; /* モバイルでは角丸をなくす */
+                min-height: 100vh; /* 画面全体を使う */
+            }
+            h1 {
+                margin-bottom: 20px;
+            }
+            
+            /* コントロールエリアの調整 */
+            .category-controls, .mode-row {
+                flex-direction: column; /* 縦に積み重ねる */
+                gap: 10px;
+                align-items: stretch; /* 幅を揃える */
+            }
+            .category-controls label {
+                text-align: left; /* ラベルを左寄せ */
+            }
+            
+            .category-controls select,
+            #review-mode-btn, 
+            #reset-review-btn, 
+            #quick-five-btn {
+                width: 100%; /* フル幅にする */
+                box-sizing: border-box; 
+            }
+            
+            /* 文字サイズコントロールを右に寄せる */
+            .font-size-control {
+                justify-content: flex-start; /* 左寄せに変更して、他の要素と揃える */
+                margin-top: 5px; /* 上部に少しスペース */
+            }
+            .font-size-control label {
+                flex-shrink: 0; /* ラベルが縮まないように */
+            }
+
+            /* オプションボタンのパディングを調整 */
+            .option-btn {
+                padding: 14px 16px;
+                font-size: 0.9rem; /* オプションボタンのフォントを少し小さく */
+            }
+            
+            /* ダッシュボードのフォントサイズ調整 */
+            .dashboard {
+                padding: 15px;
+            }
+            .score-value {
+                font-size: 1.8rem;
+            }
+        }
     </style>
 </head>
 <body onload="updateReviewButton(); initializeFontSize()">
@@ -288,7 +405,7 @@
         <h1>🚑 救急救命士錬成試験対策</h1>
         
         <div class="category-controls">
-            <label for="category-select">分野を選択:</label>
+            <label for="category-select">試験を選択:</label> 
             <select id="category-select" onchange="loadRandomQuestion()">
                 </select>
             
@@ -343,6 +460,22 @@
             </div>
             <button class="next-btn" onclick="loadRandomQuestion()">次の問題へ</button>
         </div>
+        
+        <div class="dashboard" id="score-dashboard">
+            <h2>📊 学習進捗ダッシュボード</h2>
+            
+            <div class="score-summary">
+                <p>総合正答率</p>
+                <span id="overall-rate" class="score-value">--%</span>
+                <p>（合計 <span id="overall-total">--</span> 問）</p>
+            </div>
+            
+            <h3>試験別正答率</h3>
+            <ul class="category-scores" id="category-score-list">
+                <li>計算中...</li>
+            </ul>
+        </div>
+        
     </div>
 
     <script src="questions.js"></script>
@@ -360,7 +493,7 @@
         let quickFiveMode = false;
         let quickFiveQuestions = []; // 出題予定の問題IDリスト
         let quickFiveIndex = 0;      // 現在の問題インデックス
-        let quickFiveResults = []; // ★追加: 5問モードの結果を保存する配列
+        let quickFiveResults = []; // 5問モードの結果を保存する配列
 
         function getIncorrectQuestions() {
             const stored = localStorage.getItem(INCORRECT_KEY);
@@ -412,6 +545,7 @@
             history[id] = current;
             localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
             updateReviewButton();
+            updateScoreDashboard(); 
         }
         
         // --- フォントサイズ管理機能 ---
@@ -448,6 +582,100 @@
         }
         // ------------------------------------
         
+        // --- 成績計算・表示機能 ---
+
+        function calculateScores() {
+            const history = getQuestionHistory();
+            let totalQuestions = 0;
+            let totalCorrect = 0;
+            const categoryStats = {}; // { 'カテゴリー名': { total: 0, correct: 0 } }
+            
+            // カテゴリーリストを準備（設定されていない問題はスキップ）
+            const questionsByCategory = questionData.reduce((acc, q) => {
+                if (q.category) {
+                    if (!acc[q.category]) {
+                        acc[q.category] = [];
+                    }
+                    acc[q.category].push(q);
+                }
+                return acc;
+            }, {});
+            
+            // 1. 全問題の統計を計算
+            for (const id in history) {
+                const h = history[id];
+                totalQuestions += h.total;
+                totalCorrect += h.correct;
+                
+                // 2. 分野別の統計も同時に計算
+                const q = questionData.find(q => q.id == id);
+                if (q && q.category) {
+                    const category = q.category;
+                    if (!categoryStats[category]) {
+                        categoryStats[category] = { total: 0, correct: 0 };
+                    }
+                    categoryStats[category].total += h.total;
+                    categoryStats[category].correct += h.correct;
+                }
+            }
+            
+            // 3. 未回答のカテゴリーを0%でリストに追加（未回答でも表示するため）
+            for (const category in questionsByCategory) {
+                if (!categoryStats[category]) {
+                    categoryStats[category] = { total: 0, correct: 0 };
+                }
+            }
+            
+            return { totalQuestions, totalCorrect, categoryStats };
+        }
+
+
+        function updateScoreDashboard() {
+            const { totalQuestions, totalCorrect, categoryStats } = calculateScores();
+            
+            const overallRateElement = document.getElementById('overall-rate');
+            const overallTotalElement = document.getElementById('overall-total');
+            const categoryListElement = document.getElementById('category-score-list');
+            
+            // 総合正答率の表示
+            const overallRate = totalQuestions > 0 ? ((totalCorrect / totalQuestions) * 100).toFixed(1) : 0;
+            overallRateElement.innerText = `${overallRate}%`;
+            overallTotalElement.innerText = totalQuestions;
+            
+            // 分野別正答率の表示
+            categoryListElement.innerHTML = '';
+            
+            const sortedCategories = Object.keys(categoryStats).sort();
+
+            sortedCategories.forEach(category => {
+                const stats = categoryStats[category];
+                const categoryTotal = stats.total;
+                const categoryCorrect = stats.correct;
+                
+                const rate = categoryTotal > 0 ? ((categoryCorrect / categoryTotal) * 100).toFixed(1) : 0;
+                
+                const listItem = document.createElement('li');
+                
+                let rateClass = '';
+                // 5問以上回答かつ正答率60%未満で警告
+                if (categoryTotal > 4 && rate < 60) { 
+                     rateClass = 'low';
+                }
+
+                // カテゴリー名をそのまま「試験名」として使用
+                listItem.innerHTML = `
+                    <span class="category-name">${category}</span>
+                    <span class="rate ${rateClass}">
+                        ${rate}%
+                        <span style="font-size:0.8em; color:#777; margin-left:8px;">
+                            (${categoryCorrect}/${categoryTotal})
+                        </span>
+                    </span>
+                `;
+                categoryListElement.appendChild(listItem);
+            });
+        }
+        
         // --- UIとモード制御 ---
         function setupCategories() {
             if (typeof questionData === 'undefined') return;
@@ -460,7 +688,8 @@
 
             const allOption = document.createElement('option');
             allOption.value = 'all';
-            allOption.innerText = '全ての分野';
+            // 全ての試験に修正済み
+            allOption.innerText = '全ての試験';
             select.appendChild(allOption);
 
             availableCategories.forEach(category => {
@@ -507,6 +736,7 @@
                 endQuickFiveMode(false); // 5問モードを強制終了 (結果表示なし)
                 updateReviewButton();
                 loadRandomQuestion();
+                updateScoreDashboard(); 
                 alert("誤答レビュー履歴と学習履歴をリセットしました。");
             }
         }
@@ -540,7 +770,7 @@
             quickFiveMode = true;
             quickFiveQuestions = [];
             quickFiveIndex = 0;
-            quickFiveResults = []; // ★修正: 結果配列をリセット
+            quickFiveResults = []; 
 
             // 他のモードを強制終了
             reviewMode = false;
@@ -699,7 +929,7 @@
                 candidateQuestions = filteredQuestions.filter(q => incorrectIds.includes(q.id));
                 
                 if (candidateQuestions.length === 0) {
-                    alert(`選択中のカテゴリー（${selectedCategory}）には、誤答した問題がありませんでした。通常モードに戻ります。`);
+                    alert(`選択中の試験（${selectedCategory}）には、誤答した問題がありませんでした。通常モードに戻ります。`);
                     toggleReviewMode();
                     return;
                 }
@@ -779,7 +1009,7 @@
 
 
             if (candidateQuestions.length === 0 && !quickFiveMode) {
-                document.getElementById('question').innerText = `エラー: 選択された分野（${selectedCategory}）に問題が見つかりませんでした。questions.jsにカテゴリーが設定されているか確認してください。`;
+                document.getElementById('question').innerText = `エラー: 選択された試験（${selectedCategory}）に問題が見つかりませんでした。questions.jsにカテゴリーが設定されているか確認してください。`;
                 document.querySelector('.question-label').innerText = '問題なし';
                 return;
             }
@@ -843,7 +1073,7 @@
             const nextBtn = document.querySelector('.next-btn');
 
             if (quickFiveMode) {
-                // ★修正: 5問モードの結果を記録
+                // 5問モードの結果を記録
                 quickFiveResults.push({ id: q.id, isCorrect: isCorrect }); 
                 
                 quickFiveIndex++;
@@ -852,7 +1082,7 @@
                     nextBtn.innerText = `次の問題（${quickFiveIndex + 1} / ${quickFiveQuestions.length}）へ`;
                     document.getElementById('quick-five-btn').innerText = `サクサク5問モード (${quickFiveIndex + 1} / ${quickFiveQuestions.length})`;
                 } else {
-                    nextBtn.innerText = `結果を見る`; // ★修正: 最後の問題の次ボタンのテキスト
+                    nextBtn.innerText = `結果を見る`; // 最後の問題の次ボタンのテキスト
                     document.getElementById('quick-five-btn').innerText = `5問モード終了`;
                 }
                 nextBtn.onclick = loadRandomQuestion; 
@@ -971,6 +1201,7 @@
             loadRandomQuestion();
             updateReviewButton();
             initializeFontSize();
+            updateScoreDashboard(); 
         }
     </script>
 </body>
