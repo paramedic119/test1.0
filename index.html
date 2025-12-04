@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>救急救命士 錬成試験対策 Webアプリ</title>
+    <title>救急救命士 国家試験対策 Webアプリ</title>
     <style>
         /* --- デザイン設定 (CSS) --- */
         body {
@@ -34,25 +34,19 @@
             letter-spacing: 0.05em;
         }
         
-        /* カテゴリーと出題順のコントロールをまとめる */
         .category-controls {
             margin-bottom: 15px; 
             text-align: center;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap; 
-            gap: 15px;
-        }
-        .category-controls label, .category-controls select {
-            font-size: 1rem;
         }
         .category-controls select {
             padding: 8px;
             border-radius: 6px;
             border: 1px solid #ccc;
+            font-size: 1rem;
         }
 
         .mode-controls {
+            /* flexを使ってボタンを横並びにする */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -68,6 +62,7 @@
             cursor: pointer;
             transition: all 0.2s;
         }
+        /* レビューモードON時のスタイル */
         #review-mode-btn[style*="background-color: rgb(231, 111, 81)"] {
             background-color: #e76f51 !important;
             color: white !important;
@@ -99,7 +94,7 @@
             margin-bottom: 10px;
         }
         .question-text {
-            font-size: 1.05rem; /* ★修正: 問題文を小さく */
+            font-size: 1.15rem;
             font-weight: bold;
             line-height: 1.6;
         }
@@ -113,7 +108,7 @@
             border: 2px solid #e0e0e0;
             background: white;
             border-radius: 10px;
-            font-size: 0.95rem; /* ★修正: 選択肢を小さく */
+            font-size: 1rem;
             color: #444;
             cursor: pointer;
             transition: all 0.2s;
@@ -166,7 +161,7 @@
             background-color: #f8f9fa;
             border-radius: 12px;
             border-left: 5px solid #ccc;
-            display: none; 
+            display: none; /* 最初は非表示 */
             animation: fadeIn 0.5s ease;
         }
         @keyframes fadeIn {
@@ -207,7 +202,7 @@
             display: block;
             width: 100%;
             padding: 16px;
-            background-color: #28a745; 
+            background-color: #28a745; /* 緑色 */
             color: white;
             border: none;
             border-radius: 10px;
@@ -226,18 +221,12 @@
 <body onload="updateReviewButton()">
 
     <div class="card">
-        <h1>🚑 救急救命士 錬成試験対策</h1>
+        <h1>🚑 救急救命士 国家試験対策</h1>
         
         <div class="category-controls">
             <label for="category-select">分野を選択:</label>
             <select id="category-select" onchange="loadRandomQuestion()">
                 </select>
-            
-            <label for="order-select">出題順:</label>
-            <select id="order-select" onchange="loadRandomQuestion()">
-                <option value="random">ランダム（スマート）</option>
-                <option value="sequential">ID順</option>
-            </select>
         </div>
         
         <div class="mode-controls">
@@ -245,7 +234,7 @@
                 誤答レビューモード (0問)
             </button>
             <button id="reset-review-btn" onclick="resetIncorrectQuestions()">
-                履歴リセット
+                リセット
             </button>
         </div>
 
@@ -276,10 +265,8 @@
     <script>
         // --- データ永続化と管理 ---
         const INCORRECT_KEY = 'incorrectQuestionIds';
-        const HISTORY_KEY = 'questionHistory'; // 学習履歴キー
         let reviewMode = false;
-        let availableCategories = []; 
-        let currentSequentialIndex = 0; // ID順出題のためのインデックス
+        let availableCategories = []; // 抽出されたカテゴリーを保存
 
         function getIncorrectQuestions() {
             const stored = localStorage.getItem(INCORRECT_KEY);
@@ -308,49 +295,26 @@
             }
         }
         
-        // --- 問題の学習履歴管理 ---
-        function getQuestionHistory() {
-            const stored = localStorage.getItem(HISTORY_KEY);
-            return stored ? JSON.parse(stored) : {};
-        }
-
-        function updateQuestionHistory(id, isCorrect) {
-            const history = getQuestionHistory();
-            // total:回答回数, correct:正解回数, lastCorrect:最終正解日時(UNIXタイム)
-            const current = history[id] || { total: 0, correct: 0, lastCorrect: 0 }; 
-            
-            current.total++;
-            
-            if (isCorrect) {
-                current.correct++;
-                current.lastCorrect = Date.now(); 
-                removeIncorrectQuestion(id); // 正解したら誤答リストから削除
-            } else {
-                // 不正解の場合は、誤答リストに追加
-                addIncorrectQuestion(id); 
-            }
-            
-            history[id] = current;
-            localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
-            updateReviewButton();
-        }
-        // ------------------------------------
-        
         // --- UIとモード制御 ---
+
         function setupCategories() {
             if (typeof questionData === 'undefined') return;
 
+            // 重複を除いたカテゴリーリストを作成
+            // categoryプロパティが存在しない問題は除外 (filter(Boolean))
             const categories = questionData.map(q => q.category).filter(Boolean);
             availableCategories = [...new Set(categories)].sort(); 
             
             const select = document.getElementById('category-select');
-            select.innerHTML = ''; 
+            select.innerHTML = ''; // 既存のオプションをクリア
 
+            // 1. 全ての問題 オプション
             const allOption = document.createElement('option');
             allOption.value = 'all';
             allOption.innerText = '全ての分野';
             select.appendChild(allOption);
 
+            // 2. 個別カテゴリー オプション
             availableCategories.forEach(category => {
                 const option = document.createElement('option');
                 option.value = category;
@@ -387,14 +351,12 @@
         }
         
         function resetIncorrectQuestions() {
-            if (confirm("本当に誤答レビューの履歴と学習履歴を全てリセットしてもよろしいですか？この操作は元に戻せません。")) {
+            if (confirm("本当に誤答レビューの履歴を全てリセットしてもよろしいですか？この操作は元に戻せません。")) {
                 localStorage.removeItem(INCORRECT_KEY);
-                localStorage.removeItem(HISTORY_KEY); 
                 reviewMode = false;
-                currentSequentialIndex = 0; 
                 updateReviewButton();
                 loadRandomQuestion();
-                alert("誤答レビュー履歴と学習履歴をリセットしました。");
+                alert("誤答レビュー履歴をリセットしました。");
             }
         }
 
@@ -416,7 +378,7 @@
             loadRandomQuestion();
         }
 
-        // --- 問題の読み込みロジック (スマート出題に対応) ---
+        // --- 問題の読み込みロジック ---
         let currentQuestion = null;
 
         if (typeof questionData === 'undefined') {
@@ -433,122 +395,50 @@
             let candidateQuestions = [];
             const incorrectIds = getIncorrectQuestions();
             
+            // カテゴリー選択要素が存在しない場合を考慮
             const categorySelect = document.getElementById('category-select');
-            const orderSelect = document.getElementById('order-select'); 
-            
             const selectedCategory = categorySelect ? categorySelect.value : 'all';
-            const selectedOrder = orderSelect ? orderSelect.value : 'random'; 
-
-            // 1. カテゴリーで問題リストをフィルタリング
-            let filteredQuestions = questionData.filter(q => {
-                return selectedCategory === 'all' || q.category === selectedCategory;
-            });
             
-            // ID順に並べ替えておく
-            filteredQuestions.sort((a, b) => a.id - b.id);
-
+            // 1. カテゴリーで問題リストをフィルタリング
+            let filteredQuestions = questionData;
+            if (selectedCategory !== 'all') {
+                filteredQuestions = questionData.filter(q => q.category === selectedCategory);
+            }
 
             if (reviewMode && incorrectIds.length > 0) {
                 // 2-1. レビューモード: フィルタリングされた中から、誤答リストにある問題のみを選出
                 candidateQuestions = filteredQuestions.filter(q => incorrectIds.includes(q.id));
                 
                 if (candidateQuestions.length === 0) {
+                     // レビューモードで、選択カテゴリー内に誤答がなかった場合
                     alert(`選択中のカテゴリー（${selectedCategory}）には、誤答した問題がありませんでした。通常モードに戻ります。`);
                     toggleReviewMode();
                     return;
                 }
-                
-                // レビューモードではランダム出題
-                const randomIndex = Math.floor(Math.random() * candidateQuestions.length);
-                q = candidateQuestions[randomIndex];
-
-            } else if (selectedOrder === 'sequential') {
-                // 2-2. ID順モード
-                candidateQuestions = filteredQuestions;
-
-                if (currentSequentialIndex >= candidateQuestions.length) {
-                    currentSequentialIndex = 0; // 全問解き終わったら最初に戻る
-                    alert(`全 ${candidateQuestions.length} 問を解き終わりました。最初に戻ります。`);
-                }
-                q = candidateQuestions[currentSequentialIndex];
-                currentSequentialIndex++; // 次に備えてインデックスを進める
 
             } else {
-                // 2-3. ランダムモード（スマート出題ロジックを適用）
+                // 2-2. 通常モード: フィルタリングされた問題全てを候補とする
                 candidateQuestions = filteredQuestions;
-
-                // 履歴を取得
-                const history = getQuestionHistory();
-                const now = Date.now();
-                
-                // 各問題に重み（weight）を計算
-                const weightedQuestions = candidateQuestions.map(q => {
-                    const h = history[q.id];
-                    let weight = 1.0; // 基本の重み
-                    
-                    if (h && h.total > 0) {
-                        // ① 正答率が低いほど重みを増やす
-                        const successRate = h.correct / h.total;
-                        // 正答率が50%なら重み1倍、0%なら重み2倍に近づく
-                        weight *= (2.0 - successRate); 
-                        
-                        // ② 最後に正解してから時間が経つほど重みを増やす
-                        const timeSinceCorrect = now - h.lastCorrect; // ミリ秒
-                        // 1日以上正解がない場合に重みを増加させる
-                        const daysSinceCorrect = timeSinceCorrect / (1000 * 60 * 60 * 24); 
-                        
-                        // 1日経過ごとに重みが最大1.5倍まで増える（調整可能）
-                        if (daysSinceCorrect > 0) {
-                            weight *= Math.min(1.5, 1 + (daysSinceCorrect * 0.1));
-                        }
-                    } else {
-                        // 未回答の問題は重みを高く設定し、優先的に出題する
-                        weight = 3.0; 
-                    }
-                    
-                    return { question: q, weight: weight };
-                });
-
-                // 重みの合計を計算
-                const totalWeight = weightedQuestions.reduce((sum, item) => sum + item.weight, 0);
-                
-                // ランダムな閾値を決定
-                let randomThreshold = Math.random() * totalWeight;
-                
-                // 重み付き抽選を実行
-                for (const item of weightedQuestions) {
-                    randomThreshold -= item.weight;
-                    if (randomThreshold <= 0) {
-                        q = item.question;
-                        break;
-                    }
-                }
-                
-                // 万が一抽選に失敗したら、通常のランダム選択に戻る
-                if (!q) {
-                    const randomIndex = Math.floor(Math.random() * candidateQuestions.length);
-                    q = candidateQuestions[randomIndex];
-                }
             }
 
             if (candidateQuestions.length === 0) {
+                // 候補問題がゼロの場合
                 document.getElementById('question').innerText = `エラー: 選択された分野（${selectedCategory}）に問題が見つかりませんでした。questions.jsにカテゴリーが設定されているか確認してください。`;
                 document.querySelector('.question-label').innerText = '問題なし';
                 return;
             }
 
+            // 3. 候補問題からランダムに1問選出
+            const randomIndex = Math.floor(Math.random() * candidateQuestions.length);
+            q = candidateQuestions[randomIndex];
+            
             currentQuestion = q; 
 
             // 問題文を表示
             let modeLabel = reviewMode ? "（レビュー中）" : "";
             let categoryInfo = selectedCategory !== 'all' ? ` [${selectedCategory}]` : "";
-            // ID順の場合は、現在の進捗を表示
-            let orderInfo = selectedOrder === 'sequential' && !reviewMode 
-                ? ` (ID:${q.id}, ${currentSequentialIndex}/${filteredQuestions.length})` 
-                : ` (ID:${q.id})`;
-            
             let label = q.isMultiSelect ? `問題${modeLabel}（複数選択）` : `問題${modeLabel}（単一選択）`;
-            document.querySelector('.question-label').innerText = label + categoryInfo + orderInfo; 
+            document.querySelector('.question-label').innerText = label + categoryInfo; // カテゴリー名も表示
             document.getElementById('question').innerText = q.text;
             
             // 選択肢ボタンを生成
@@ -557,14 +447,9 @@
                 btn.className = 'option-btn';
                 btn.innerText = option;
 
-                // 複数選択問題の判定ロジック
                 if (q.isMultiSelect) {
-                    // 複数選択の場合、クリックでクラスをトグルするだけ（判定はしない）
-                    btn.onclick = () => {
-                        btn.classList.toggle('selected');
-                    };
+                    btn.onclick = () => btn.classList.toggle('selected');
                 } else {
-                    // 単一選択の場合のみ、クリックで判定関数を呼ぶ
                     btn.onclick = () => checkSingleAnswer(index, q);
                 }
                 document.getElementById('options').appendChild(btn);
@@ -597,6 +482,7 @@
                 resultTitle.innerText = "◎ 正解！素晴らしい！";
                 resultTitle.style.color = "#2a9d8f";
                 resultArea.style.borderLeftColor = "#2a9d8f";
+                removeIncorrectQuestion(q.id); 
             } else {
                 buttons[selectedIndex].classList.add('wrong');
                 if (correctIndex !== undefined && correctIndex >= 0 && correctIndex < buttons.length) {
@@ -606,13 +492,11 @@
                 resultTitle.innerText = "✕ 残念... 誤答リストに追加しました。";
                 resultTitle.style.color = "#e76f51";
                 resultArea.style.borderLeftColor = "#e76f51";
+                addIncorrectQuestion(q.id); 
             }
 
             explanationSpan.innerHTML = q.explanation;
             resultArea.style.display = 'block';
-            
-            // 学習履歴の更新
-            updateQuestionHistory(q.id, isCorrect); 
         }
 
         function checkMultiAnswer(clickedCheckBtn) {
@@ -658,10 +542,12 @@
                 resultTitle.innerText = "◎ 完全正解！";
                 resultTitle.style.color = "#2a9d8f";
                 resultArea.style.borderLeftColor = "#2a9d8f";
+                removeIncorrectQuestion(currentQuestion.id); 
             } else {
                 resultTitle.innerText = "✕ 不正解... 誤答リストに追加しました。";
                 resultTitle.style.color = "#e76f51";
                 resultArea.style.borderLeftColor = "#e76f51";
+                addIncorrectQuestion(currentQuestion.id); 
             }
 
             buttons.forEach((btn, index) => {
@@ -677,9 +563,6 @@
 
             explanationSpan.innerHTML = currentQuestion.explanation;
             resultArea.style.display = 'block';
-
-            // 学習履歴の更新
-            updateQuestionHistory(currentQuestion.id, isCorrect);
         }
 
 
