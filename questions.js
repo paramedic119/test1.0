@@ -1,5 +1,5 @@
-const questions = [
-  // --- 令和6年度第1回 (ID: 1 - 65) ---
+const questionData = [
+  {  // --- 令和6年度第1回 (ID: 1 - 65) ---
   {
     id: 1,
     category: "令和6年度第1回",
@@ -2058,3 +2058,4 @@ const questions = [
 // または
 // export default questions; 
 // 環境に合わせて適宜変更してください。
+
