@@ -2652,11 +2652,10 @@ const questionData = [
   }
 ];
 
-];
-
 // 外部ファイルとして利用するためにエクスポート
 // module.exports = questions;
 // または
 // export default questions; 
 // 環境に合わせて適宜変更してください。
+
 
