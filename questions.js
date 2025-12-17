@@ -2636,7 +2636,6 @@ const questionData = [
     isMultiSelect: true,
     explanation: "凍傷部位をマッサージしたり、現場で不適切に急速加温したりすることは組織損傷を悪化させるため避けます。"
   },
-  // --- PAGE 1 ---
   {
     id: 351,
     category: "令和3年度第1回",
@@ -3229,7 +3228,7 @@ const questionData = [
     options: ["120mmHg", "140mmHg", "160mmHg", "180mmHg", "200mmHg"],
     correctIndex: 2,
     explanation: "海抜0mの気圧は760mmHgで、酸素濃度は約21%であるため、760 × 0.21 ≒ 160mmHgとなります。"
-  },
+  }
  ];
 
 // 外部ファイルとして利用するためにエクスポート
@@ -3237,6 +3236,7 @@ const questionData = [
 // または
 // export default questions; 
 // 環境に合わせて適宜変更してください。
+
 
 
 
