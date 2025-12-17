@@ -2635,6 +2635,599 @@ const questionData = [
     correctIndices: [2, 4],
     isMultiSelect: true,
     explanation: "凍傷部位をマッサージしたり、現場で不適切に急速加温したりすることは組織損傷を悪化させるため避けます。"
+  },
+  {
+    id: 351,
+    category: "令和3年度第1回",
+    text: "1 インフォームドコンセントの原則が示されたのはどれか。1つ選べ。",
+    options: ["ヒポクラテスの誓い", "ジュネーブ宣言", "リスボン宣言", "ヘルシンキ宣言", "ポツダム宣言"],
+    correctIndex: 3,
+    [span_0](start_span)[span_1](start_span)explanation: "ヘルシンキ宣言（1964年）は、人間を対象とする医学研究の倫理原則としてインフォームド・コンセントの重要性を示しました[span_0](end_span)[span_1](end_span)。"
+  },
+  {
+    id: 352,
+    category: "令和3年度第1回",
+    text: "2 平成25年厚生労働省人口動態統計における、主な死因別の死亡率の1位、2位はどれか。2つ選べ。",
+    options: ["肺炎", "心疾患", "不慮の事故", "悪性新生物", "脳血管障害"],
+    correctIndices: [1, 3],
+    isMultiSelect: true,
+    [span_2](start_span)[span_3](start_span)explanation: "当時の死因順位は1位が悪性新生物、2位が心疾患でした[span_2](end_span)[span_3](end_span)。"
+  },
+  {
+    id: 353,
+    category: "令和3年度第1回",
+    text: "3 医療計画のなかの5疾病に含まれないのはどれか。1つ選べ。",
+    options: ["がん", "脳卒中", "急性心筋梗塞", "肺炎", "精神疾患"],
+    correctIndex: 3,
+    [span_4](start_span)[span_5](start_span)explanation: "5疾病は「がん、脳卒中、急性心筋梗塞、糖尿病、精神疾患」であり、肺炎は含まれません[span_4](end_span)[span_5](end_span)。"
+  },
+  {
+    id: 354,
+    category: "令和3年度第1回",
+    text: "4 「精神保健福祉法」による入院形態のうち最も割合が多いものはどれか。1つ選べ。",
+    options: ["任意入院", "医療保護入院", "応急入院", "措置入院", "緊急措置入院"],
+    correctIndex: 0,
+    [span_6](start_span)[span_7](start_span)explanation: "本人の同意に基づく「任意入院」が最も高い割合を占めています[span_6](end_span)[span_7](end_span)。"
+  },
+  {
+    id: 355,
+    category: "令和3年度第1回",
+    text: "5 介護保険の被保険者は何歳以上が対象となるか。1つ選べ。",
+    options: ["40歳以上", "45歳以上", "50歳以上", "55歳以上", "60歳以上"],
+    correctIndex: 0,
+    [span_8](start_span)[span_9](start_span)explanation: "介護保険の被保険者は、40歳以上の国民が対象となります[span_8](end_span)[span_9](end_span)。"
+  },
+  // --- PAGE 2 ---
+  {
+    id: 356,
+    category: "令和3年度第1回",
+    text: "6 老齢基礎年金は何歳から支給されるか(繰上げ受給は考慮しない)。1つ選べ。",
+    options: ["55歳", "60歳", "65歳", "70歳", "75歳"],
+    correctIndex: 2,
+    [span_10](start_span)[span_11](start_span)explanation: "原則として満65歳から支給が開始されます[span_10](end_span)[span_11](end_span)。"
+  },
+  {
+    id: 357,
+    category: "令和3年度第1回",
+    text: "7 生活保護の種類で誤っているのはどれか。1つ選べ。",
+    options: ["生活", "食事", "教育", "出産", "葬祭"],
+    correctIndex: 1,
+    [span_12](start_span)[span_13](start_span)explanation: "生活保護には「食事扶助」という区分はなく、日常の生活費は「生活扶助」に含まれます[span_12](end_span)[span_13](end_span)。"
+  },
+  {
+    id: 358,
+    category: "令和3年度第1回",
+    text: "8 蛋白質合成を主たる役割とする細胞小器官はどれか。1つ選べ。",
+    options: ["中心小体", "ゴルジ装置", "リソソーム", "リボソーム", "ミトコンドリア"],
+    correctIndex: 3,
+    [span_14](start_span)[span_15](start_span)explanation: "リボソームは、メッセンジャーRNAの情報に基づいて蛋白質を合成する器官です[span_14](end_span)[span_15](end_span)。"
+  },
+  {
+    id: 359,
+    category: "令和3年度第1回",
+    text: "9 組織のうち人体最大のものはどれか。1つ選べ。",
+    options: ["上皮組織", "支持組織", "筋組織", "神経組織", "臓器組織"],
+    correctIndex: 2,
+    [span_16](start_span)[span_17](start_span)explanation: "筋組織は体重の約40〜50%を占め、人体で最大の組織とされます[span_16](end_span)[span_17](end_span)。"
+  },
+  {
+    id: 360,
+    category: "令和3年度第1回",
+    text: "10 体液の組成について正しいのはどれか。1つ選べ。",
+    options: ["体重に占める水の割合は成人女子で約60%である。", "脂肪の多い人では水分が多い。", "成人男子の細胞外液は体重の約40%である。", "細胞内液には、細胞を一定の環境に置き、その活動を支える働きがある。", "血漿と間質液はともに細胞外液である。"],
+    correctIndex: 4,
+    [span_18](start_span)[span_19](start_span)explanation: "細胞外液は主に血漿と間質液で構成されています[span_18](end_span)[span_19](end_span)。"
+  },
+  // --- PAGE 3 ---
+  {
+    id: 361,
+    category: "令和3年度第1回",
+    text: "11 細胞内液の成分で最も多いイオンはどれか。1つ選べ。",
+    options: ["クロール", "カリウム", "ナトリウム", "カルシウム", "マグネシウム"],
+    correctIndex: 1,
+    [span_20](start_span)[span_21](start_span)explanation: "細胞内液においてカリウムイオン（K+）は最も濃度の高い陽イオンです[span_20](end_span)[span_21](end_span)。"
+  },
+  {
+    id: 362,
+    category: "令和3年度第1回",
+    text: "12 身体の部位を特定する体表の線で誤っているのはどれか。1つ選べ。",
+    options: ["前正中線: 胸骨の真ん中を通る縦の線", "鎖骨中線: 鎖骨の中央を通る縦の線", "肩甲線:肩甲骨下角を通る縦の線", "ヤコビー線: 両腸骨稜を結ぶ線", "中腋窩線: 腋窩の前縁を通る縦の線"],
+    correctIndex: 4,
+    [span_22](start_span)[span_23](start_span)explanation: "中腋窩線は「腋窩の中央」を通る線です。前縁を通るのは前腋窩線です[span_22](end_span)[span_23](end_span)。"
+  },
+  {
+    id: 363,
+    category: "令和3年度第1回",
+    text: "13 酸塩基平衡の説明で誤っているのはどれか。2つ選べ。",
+    options: ["酸は水素イオンを受け取る物質、塩基は水素イオンを与える物質と定義される。", "健康人の動脈血のPHの正常値は7.35~7.45である。", "細胞内液のPHは6.0~7.4前後である。", "組織間液と静脈血のPHは動脈血よりやや高値である。", "代謝の結果、酸が生産されるため体液は酸性に傾く。"],
+    correctIndices: [0, 3],
+    isMultiSelect: true,
+    [span_24](start_span)[span_25](start_span)explanation: "1：ブレンステッドの定義では、酸が水素イオンを与え、塩基が受け取ります。4：組織間液や静脈血はCO2を含むためPHは動脈血より低くなります[span_24](end_span)[span_25](end_span)。"
+  },
+  {
+    id: 364,
+    category: "令和3年度第1回",
+    text: "14 体液と浸透圧で誤っているのはどれか。2つ選べ。",
+    options: ["タンパク質によって生じる浸透圧を膠質浸透圧という。", "水は浸透圧の高い方から低い方へ移動する。", "低アルブミン血症は血管内に水を引き留めておけないため浮腫となる。", "間質液と細胞内液の間には細胞膜がある。", "血漿浸透圧に最も大きく影響するのはクロールイオンである。"],
+    correctIndices: [1, 4],
+    isMultiSelect: true,
+    [span_26](start_span)[span_27](start_span)explanation: "2：水は浸透圧の「低い方から高い方」へ移動します。5：最も影響するのは「ナトリウムイオン」です[span_26](end_span)[span_27](end_span)。"
+  },
+  {
+    id: 365,
+    category: "令和3年度第1回",
+    text: "15 腹部の構造で正しいのはどれか。2つ選べ。",
+    options: ["腹腔と骨盤腔は連続している。", "前腹部と後腹部を区分けする目安は中腋窩線である。", "通常腹部とは、肋骨弓の下から腸骨稜より上の部分をいう。", "筋組織が豊富である", "骨性組織が少ない。"],
+    correctIndices: [0, 4],
+    isMultiSelect: true,
+    [span_28](start_span)[span_29](start_span)explanation: "腹腔と骨盤腔に明確な境界はなく連続しています。また、腹部は背側に脊柱があるのみで他の部位に比べ骨性組織が少ないのが特徴です[span_28](end_span)[span_29](end_span)。"
+  },
+  // --- PAGE 4 ---
+  {
+    id: 366,
+    category: "令和3年度第1回",
+    text: "16 寛骨を形成している骨の名称で誤っているのはどれか。2つ選べ。",
+    options: ["腸骨", "恥骨", "尾骨", "坐骨", "仙骨"],
+    correctIndices: [2, 4],
+    isMultiSelect: true,
+    [span_30](start_span)[span_31](start_span)explanation: "寛骨は「腸骨・坐骨・恥骨」が癒合して形成されます。尾骨と仙骨は含まれません[span_30](end_span)[span_31](end_span)。"
+  },
+  {
+    id: 367,
+    category: "令和3年度第1回",
+    text: "17 仰臥位の状態で心臓の拍動 (心尖拍動) がふれる部位はどこか。1つ選べ。",
+    options: ["右鎖骨中線第4肋間腔", "胸骨右緣第5肋間腔", "胸骨左縁第4肋間腔", "胸骨左縁第5肋間腔", "左鎖骨中線第5肋間腔"],
+    correctIndex: 4,
+    [span_32](start_span)[span_33](start_span)explanation: "心尖拍動は通常、左第5肋間、鎖骨中線よりやや内側で触知されます[span_32](end_span)[span_33](end_span)。"
+  },
+  {
+    id: 368,
+    category: "令和3年度第1回",
+    text: "18 人体で複数ある臓器はどれか。2つ選べ。",
+    options: ["脾臟", "腎臓", "肺", "膵臓", "肝臟"],
+    correctIndices: [1, 2],
+    isMultiSelect: true,
+    [span_34](start_span)[span_35](start_span)explanation: "腎臓と肺は左右一対（複数）存在する臓器です[span_34](end_span)[span_35](end_span)。"
+  },
+  {
+    id: 369,
+    category: "令和3年度第1回",
+    text: "19 解剖学的指標の組み合わせとして誤っているのはどれか。1つ選べ。",
+    options: ["オトガイ: 下顎の中央前方の隆起", "肩峰:両肩の先端をなす肩甲骨部分", "胸骨角:胸骨柄と胸骨体が結合するところで、前方が凸になっている隆起", "隆椎:第8頸椎(棘突起)", "大転子:大腿骨頸部の上外側に突出した部分"],
+    correctIndex: 3,
+    [span_36](start_span)[span_37](start_span)explanation: "隆椎は「第7頸椎」の棘突起です[span_36](end_span)[span_37](end_span)。"
+  },
+  {
+    id: 370,
+    category: "令和3年度第1回",
+    text: "20 後腹膜腔に位置するものはどれか。1つ選べ。",
+    options: ["胃", "肝臓", "腎臟", "脾臟", "膀胱"],
+    correctIndex: 2,
+    [span_38](start_span)[span_39](start_span)explanation: "腎臓、副腎、膵臓、十二指腸などは後腹膜臓器に分類されます[span_38](end_span)[span_39](end_span)。"
+  },
+  // --- PAGE 5 ---
+  {
+    id: 371,
+    category: "令和3年度第1回",
+    text: "21 次のうち間脳に含まれないものはどれか。2つ選べ。",
+    options: ["視床", "延髄", "視床下部", "橋", "下垂体"],
+    correctIndices: [1, 3],
+    isMultiSelect: true,
+    [span_40](start_span)[span_41](start_span)explanation: "延髄と橋は「脳幹」の一部であり、間脳には含まれません[span_40](end_span)[span_41](end_span)。"
+  },
+  {
+    id: 372,
+    category: "令和3年度第1回",
+    text: "22 視床下部の機能として正しいものを2つ選べ。",
+    options: ["循環の中枢", "体温調節中枢", "意識の中枢", "呼吸の中枢", "食欲中枢"],
+    correctIndices: [1, 4],
+    isMultiSelect: true,
+    [span_42](start_span)[span_43](start_span)explanation: "視床下部は自律神経の総合中枢であり、体温調節や食欲調節、飲水中枢などが存在します[span_42](end_span)[span_43](end_span)。"
+  },
+  {
+    id: 373,
+    category: "令和3年度第1回",
+    text: "23 副交感神経が関与しない脳神経を1つ選べ。",
+    options: ["動眼神経", "舌下神経", "舌咽神経", "顔面神経", "迷走神経"],
+    correctIndex: 1,
+    [span_44](start_span)[span_45](start_span)explanation: "副交感神経繊維を含む脳神経は、動眼神経(III)、顔面神経(VII)、舌咽神経(IX)、迷走神経(X)の4つです[span_44](end_span)[span_45](end_span)。"
+  },
+  {
+    id: 374,
+    category: "令和3年度第1回",
+    text: "24 交感神経の機能として誤っているものを2つ選べ。",
+    options: ["勃起", "散瞳", "インスリン分泌", "レニン分泌", "グルカゴン分泌"],
+    correctIndices: [0, 2],
+    isMultiSelect: true,
+    [span_46](start_span)[span_47](start_span)explanation: "勃起は副交感神経、インスリン分泌抑制が交感神経の働きです（促進は副交感）[span_46](end_span)[span_47](end_span)。"
+  },
+  {
+    id: 375,
+    category: "令和3年度第1回",
+    text: "25 平衡感覚・聴覚器について正しいものはどれか。1つ選べ。",
+    options: ["中耳と内耳の間に鼓膜がある。", "中耳は側頭骨の外にある。", "耳小骨はツチ骨、アブミ骨の2つからなる", "三半規管は内耳に位置する。", "鼓膜の厚さは1mmである。"],
+    correctIndex: 3,
+    [span_48](start_span)[span_49](start_span)explanation: "三半規管や前庭、蝸牛は内耳の中にあります[span_48](end_span)[span_49](end_span)。"
+  },
+  // --- PAGE 6 ---
+  {
+    id: 376,
+    category: "令和3年度第1回",
+    text: "26 皮膚感覚器の種類について誤っているものはどれか。1つ選べ。",
+    options: ["触覚", "圧覚", "痛覚", "熱覚", "冷覚"],
+    correctIndex: 3,
+    [span_50](start_span)[span_51](start_span)explanation: "皮膚の温度感覚は「温覚」と「冷覚」に分類されます[span_50](end_span)[span_51](end_span)。"
+  },
+  {
+    id: 377,
+    category: "令和3年度第1回",
+    text: "27 呼吸器系について正しいものはどれか。1つ選べ。",
+    options: ["肺でのガス交換を内呼吸と呼ぶ。", "口腔の後方約1/3を硬口蓋という。", "成人の切歯から喉頭までの長さは5~6cmである。", "左主気管支は右に比べて太く短い。", "小児は成人に比べて口腔容積に占める舌の割合が大きい。"],
+    correctIndex: 4,
+    [span_52](start_span)[span_53](start_span)explanation: "小児、特に乳幼児は口に対して舌が大きく、気道閉塞を起こしやすい特徴があります[span_52](end_span)[span_53](end_span)。"
+  },
+  {
+    id: 378,
+    category: "令和3年度第1回",
+    text: "28 喉頭を形成する軟骨について誤っているものはどれか。1つ選べ。",
+    options: ["気管軟骨", "喉頭蓋軟骨", "甲状軟骨", "披裂軟骨", "輪状軟骨"],
+    correctIndex: 0,
+    [span_54](start_span)[span_55](start_span)explanation: "気管軟骨は喉頭の下に続く気管を形成するものであり、喉頭を構成する軟骨ではありません[span_54](end_span)[span_55](end_span)。"
+  },
+  {
+    id: 379,
+    category: "令和3年度第1回",
+    text: "29 胸郭の機能について正しいものはどれか。1つ選べ。",
+    options: ["胸郭内は習慣的に陽圧である。", "胸腔圧は吸気時に-2~4cmH2Oである。", "胸腔圧は努力呼気時に+40cmH2Oに達する。", "安静時の吸気量は20%が横隔膜の機能による。", "呼気時に外肋間筋が収縮する。"],
+    correctIndex: 2,
+    [span_56](start_span)[span_57](start_span)explanation: "努力呼気時には胸腔内圧が大幅に上昇し、+40cmH2O以上に達することもあります[span_56](end_span)[span_57](end_span)。"
+  },
+  {
+    id: 380,
+    category: "令和3年度第1回",
+    text: "30 肺の機能について正しいものはどれか。1つ選べ。",
+    options: ["成人における1回換気量は約500mlである。", "成人における解剖学的死腔は約50mlである。", "肺胞の内圧は吸気時に約-10cmH2O、呼気時に約+10cmH2Oである。", "肺胞隔壁の栄養管は肺動脈と気管支静脈である。", "大気は肺胞に至るまでに約50%まで加湿される。"],
+    correctIndex: 0,
+    [span_58](start_span)[span_59](start_span)explanation: "成人の安静時の1回換気量は平均して約500mlです[span_58](end_span)[span_59](end_span)。"
+  },
+  // --- PAGE 7 ---
+  {
+    id: 381,
+    category: "令和3年度第1回",
+    text: "31 呼吸の調節について正しいのはどれか。1つ選べ。",
+    options: ["随意呼吸は大脳皮質に中枢がある。", "不随意呼吸は小脳に中枢がある。", "PaO2の低下は延髄腹外側の受容体により感知される。", "PaCO2の低下は頸動脈小体の受容体により感知される。", "PaO2が上昇またはPaCO2が低下すると呼吸が速くなる。"],
+    correctIndex: 0,
+    [span_60](start_span)[span_61](start_span)explanation: "意識的に行う随意呼吸は、大脳皮質からの指令で行われます[span_60](end_span)[span_61](end_span)。"
+  },
+  {
+    id: 382,
+    category: "令和3年度第1回",
+    text: "32 体重60kgの成人の場合、体重の約何%が循環血液量とされているか。1つ選べ。",
+    options: ["5%", "8%", "10%", "15%", "20%"],
+    correctIndex: 1,
+    [span_62](start_span)[span_63](start_span)explanation: "成人の循環血液量は体重の約8%（約1/13）とされています[span_62](end_span)[span_63](end_span)。"
+  },
+  {
+    id: 383,
+    category: "令和3年度第1回",
+    text: "33 肺循環として正しいのはどれか。1つ選べ。",
+    options: ["右心房→右心室→肺動脈→肺→肺静脈→左心房→左心室", "左心房→左心室→肺動脈→肺→肺静脈→右心房→右心室", "右心房→右心室→肺静脈→肺→肺動脈→左心房→左心室", "右心室→右心房→肺静脈→肺→肺動脈→左心室→左心房", "左心房→左心室→肺静脈→肺→肺動脈→右心房→右心室"],
+    correctIndex: 0,
+    [span_64](start_span)[span_65](start_span)explanation: "静脈血が右心系から肺動脈を経て肺でガス交換され、肺静脈を通って左心系へ戻る経路です[span_64](end_span)[span_65](end_span)。"
+  },
+  {
+    id: 384,
+    category: "令和3年度第1回",
+    text: "34 心拍出量に対する臓器血液量が約5%なのはどれか。1つ選べ。",
+    options: ["心臓", "肺", "腎臓", "肝臓", "骨格筋"],
+    correctIndex: 0,
+    [span_66](start_span)[span_67](start_span)explanation: "安静時、心臓（冠循環）には心拍出量の約5%（約250ml/分）の血液が供給されています[span_66](end_span)[span_67](end_span)。"
+  },
+  {
+    id: 385,
+    category: "令和3年度第1回",
+    text: "35 心臓の構造について誤っているのはどれか。1つ選べ。",
+    options: ["縦隔の前部に位置している", "心臓の前面には胸骨、左第3~5肋軟骨がある", "心尖部は横隔膜の上に乗ってやや左下を向いている", "心臓の壁は心膜(心外膜)、心筋(中層)、心内膜(内層) の3層から構成されている", "心筋に血液を供給するのは冠静脈である"],
+    correctIndex: 4,
+    [span_68](start_span)[span_69](start_span)explanation: "心筋に血液（酸素と栄養）を供給するのは「冠動脈」です[span_68](end_span)[span_69](end_span)。"
+  },
+  // --- PAGE 8 ---
+  {
+    id: 386,
+    category: "令和3年度第1回",
+    text: "36 次のうち誤っているのはどれか。1つ選べ。",
+    options: ["心膜腔内に滲出液や血液が急速に貯留し循環不全をきたすことを心タンポナーデという", "右心室では大動脈を介して全身へ酸素化された血液を送り出す", "両心房の隔壁を心房中隔という", "心臓には半月弁 (大動脈弁、肺動脈弁) と房室弁 (三尖弁、僧帽弁)がある", "右心室と左心室の心筋では、左心室の心筋の方が厚い"],
+    correctIndex: 1,
+    [span_70](start_span)[span_71](start_span)explanation: "全身へ血液を送り出すのは「左心室」です。右心室は肺へ送り出します[span_70](end_span)[span_71](end_span)。"
+  },
+  {
+    id: 387,
+    category: "令和3年度第1回",
+    text: "37 次のうち誤っているのはどれか。1つ選べ。",
+    options: ["心臓の弁が開放するときに生じる振動が心音の主な成分である", "I音は房室弁の閉鎖音が主成分である", "II音は半月弁の閉鎖が主成分である", "I音とII音の間が収縮期である", "II音と次の収縮期のI音との間が拡張期である"],
+    correctIndex: 0,
+    [span_72](start_span)[span_73](start_span)explanation: "心音は弁が「閉鎖」するときに生じる振動が主成分です。開放時ではありません[span_72](end_span)[span_73](end_span)。"
+  },
+  {
+    id: 388,
+    category: "令和3年度第1回",
+    text: "38 冠循環について誤っているのはどれか。1つ選べ。",
+    options: ["心拍出量の約1/20 (約250ml/分) に血液が供給されている", "心臓の最大活動時における冠動脈の血流量は安静時のおよそ5倍である", "左冠動脈は冠状溝に達すると、前下行枝と回旋枝に分かれる", "左心室壁の血流は収縮期には少なく、大部分は拡張期に発生する", "冠動脈が閉鎖するとその末梢の心筋は壊死し心筋梗塞を起こす"],
+    correctIndex: 1,
+    [span_74](start_span)[span_75](start_span)explanation: "最大活動時でも冠血流量は安静時の3〜4倍程度が限界とされています（5倍は骨格筋などの記述と混同されやすい）[span_74](end_span)[span_75](end_span)。"
+  },
+  {
+    id: 389,
+    category: "令和3年度第1回",
+    text: "39 心臓のポンプ機能について正しいのはどれか。1つ選べ。",
+    options: ["後負荷が大きくなり左室の心筋が伸びると張力が増し心室内圧が増加する", "スターリングの法則とは心室容積に応じて心室筋の収縮力も増加することである", "前負荷は心室が収縮した時に受ける抵抗である", "心拍出量は1回の心臓収縮により駆出される血液の量である", "平均血圧は1回拍出量×心拍数である"],
+    correctIndex: 1,
+    [span_76](start_span)[span_77](start_span)explanation: "スターリングの法則（フランク・スターリングの心臓の法則）により、心筋が引き伸ばされるほど収縮力が増します[span_76](end_span)[span_77](end_span)。"
+  },
+  {
+    id: 390,
+    category: "令和3年度第1回",
+    text: "40 次のうち、誤っているものはどれか。1つ選べ。",
+    options: ["食物が食道から胃に入ると幽門が閉じて食道への逆流を防ぐ。", "胃腺からは胃液が1日に約1~1,5L分泌される。", "胃酸はpH1~3の強酸性である。", "食物の胃内停滞時間は2~4時間程である。", "胃粘膜には分泌腺として噴門線、胃底腺、幽門線の3種類がある。"],
+    correctIndex: 0,
+    [span_78](start_span)[span_79](start_span)explanation: "食道への逆流を防ぐのは、胃の入り口にある「噴門」の役割です[span_78](end_span)[span_79](end_span)。"
+  },
+  // --- PAGE 9 ---
+  {
+    id: 391,
+    category: "令和3年度第1回",
+    text: "41 小腸を構成するものはどれか。2つ選べ",
+    options: ["上行結腸", "空腸", "下行結腸", "回腸", "直腸"],
+    correctIndices: [1, 3],
+    isMultiSelect: true,
+    [span_80](start_span)[span_81](start_span)explanation: "小腸は十二指腸、空腸、回腸の3つの部分で構成されます[span_80](end_span)[span_81](end_span)。"
+  },
+  {
+    id: 392,
+    category: "令和3年度第1回",
+    text: "42 肝臓の栄養血管はどれか。1つ選べ。",
+    options: ["門脈", "総肝動脈", "固有肝動脈", "上腸管動脈", "下腸管動脈"],
+    correctIndex: 2,
+    [span_82](start_span)[span_83](start_span)explanation: "肝臓への流入血液のうち、酸素を供給する栄養血管は「固有肝動脈」です[span_82](end_span)[span_83](end_span)。"
+  },
+  {
+    id: 393,
+    category: "令和3年度第1回",
+    text: "43 後腹膜腔に位置する臓器は次のうちどれか。2つ選べ。",
+    options: ["副腎", "膀胱", "子宮", "肝臓", "膵臓"],
+    correctIndices: [0, 4],
+    isMultiSelect: true,
+    [span_84](start_span)[span_85](start_span)explanation: "副腎と膵臓は代表的な後腹膜臓器です[span_84](end_span)[span_85](end_span)。"
+  },
+  {
+    id: 394,
+    category: "令和3年度第1回",
+    text: "44 尿路について誤っているものはどれか。1つ選べ。",
+    options: ["尿管には生理的狭部位が3ヶ所ある。", "尿道は男性より女性の方が長い。", "膀胱は骨盤腔の最下方に位置する。", "尿管は1分間に通常4~5回の周期的な蠕動を行っている。", "膀胱壁は粘膜、筋層、外膜の3層で構成される。"],
+    correctIndex: 1,
+    [span_86](start_span)[span_87](start_span)explanation: "尿道は男性（約16〜20cm）の方が女性（約3〜4cm）よりも遥かに長いです[span_86](end_span)[span_87](end_span)。"
+  },
+  {
+    id: 395,
+    category: "令和3年度第1回",
+    text: "45 食道について誤っているのは次のうちどれか。1つ選べ。",
+    options: ["成人で咽頭から胃に通じる長さは約50cmとされる。", "食道起始部は第6頸椎ほどの高さある。", "食道起始部から後縦隔に入るまでを頸部食道という。", "頸部食道以下から食堂裂孔の貫通までを胸部食道という。", "胸部食道以下から胃までを腹部食道という。"],
+    correctIndex: 0,
+    [span_88](start_span)[span_89](start_span)explanation: "成人の食道の長さは約25cmです[span_88](end_span)[span_89](end_span)。"
+  },
+  // --- PAGE 10 ---
+  {
+    id: 396,
+    category: "令和3年度第1回",
+    text: "46 男性生殖器の特徴で正しいものを2つ選べ。",
+    options: ["精子の形成", "外性器と内性器に分かれている", "精液の生成", "性周期により体温の変化がある", "腹腔が下界と繋がっている。"],
+    correctIndices: [0, 2],
+    isMultiSelect: true,
+    [span_90](start_span)[span_91](start_span)explanation: "精巣での精子形成と、精嚢や前立腺での精液生成が主な機能です[span_90](end_span)[span_91](end_span)。"
+  },
+  {
+    id: 397,
+    category: "令和3年度第1回",
+    text: "47 下垂体前葉から分泌されるホルモンはどれか。2つ選べ。",
+    options: ["オキシトシン", "黄体ホルモン", "性腺刺激ホルモン", "成長ホルモン", "抗利尿ホルモン"],
+    correctIndices: [2, 3],
+    isMultiSelect: true,
+    [span_92](start_span)[span_93](start_span)explanation: "成長ホルモンや性腺刺激ホルモンなどは前葉から、オキシトシンや抗利尿ホルモンは後葉から分泌されます[span_92](end_span)[span_93](end_span)。"
+  },
+  {
+    id: 398,
+    category: "令和3年度第1回",
+    text: "48 甲状腺ホルモンの主な生理機能で誤っているものを2つ選べ。",
+    options: ["基礎代謝の増加", "血中の脂質の分解を抑制する", "知能の発達を促す", "血糖値を下げる", "身体、脳、骨格の発育の促進に関与する"],
+    correctIndices: [1, 3],
+    isMultiSelect: true,
+    [span_94](start_span)[span_95](start_span)explanation: "甲状腺ホルモンは脂質の分解を促進し、また血糖値を上昇させる方向に働きます[span_94](end_span)[span_95](end_span)。"
+  },
+  {
+    id: 399,
+    category: "令和3年度第1回",
+    text: "49 血液について正しいのはどれか。1つ選べ。",
+    options: ["成人の全血液量は体重の約10%である", "ヘモグロビンは血液の膠質浸透圧に関与している", "血液は約55%の血漿成分と約45%の血球成分からなる", "アルブミンによって止血される", "白血球はリンパ球、単球、血漿にわかれる"],
+    correctIndex: 2,
+    [span_96](start_span)[span_97](start_span)explanation: "血液の容積比は、液体成分（血漿）が約55%、細胞成分（血球）が約45%です[span_96](end_span)[span_97](end_span)。"
+  },
+  {
+    id: 400,
+    category: "令和3年度第1回",
+    text: "50 正しい組み合わせを1つ選べ。",
+    options: ["赤血球 1,000万/mm3", "白血球 10万/mm3", "血小板 15~50万/mm3", "赤血球 直径約100μm", "血小板 寿命30日"],
+    correctIndex: 2,
+    [span_98](start_span)[span_99](start_span)explanation: "血小板の基準値は約15万〜35万（または50万）/mm3です。赤血球の直径は約7〜8μmです[span_98](end_span)[span_99](end_span)。"
+  },
+  // --- PAGE 11 ---
+  {
+    id: 401,
+    category: "令和3年度第1回",
+    text: "51 血液の働きについて誤っているのはどれか。1つ選べ。",
+    options: ["酸素と二酸化炭素の運搬", "栄養分と老廃物の運搬", "体温の調整", "感染に対する生体防御", "熱産生"],
+    correctIndex: 4,
+    [span_100](start_span)[span_101](start_span)explanation: "熱の「運搬」による体温調整は行いますが、血液自体が主な「熱産生」の場ではありません[span_100](end_span)[span_101](end_span)。"
+  },
+  {
+    id: 402,
+    category: "令和3年度第1回",
+    text: "52 免疫の仕組みについて正しいものはどれか。1つ選べ。",
+    options: ["非特異免疫は生まれた後に獲得するものである", "特異的免疫は生まれながらにもっているものである", "非特異的免疫にかかわる細胞は食細胞とナチュラルキラー細胞である", "自然免疫とは B 細胞や T 細胞のようにリンパ球による生体防御作用をいう", "獲得免疫とは生体防御反応としての食作用が中心である"],
+    correctIndex: 2,
+    [span_102](start_span)[span_103](start_span)explanation: "自然免疫（非特異的免疫）では、好中球やマクロファージ（食細胞）、NK細胞が中心的な役割を果たします[span_102](end_span)[span_103](end_span)。"
+  },
+  {
+    id: 403,
+    category: "令和3年度第1回",
+    text: "53 アレルギー分類の組み合わせで誤っているのはどれか。2つ選べ。",
+    options: ["Ⅰ型 ―――― 細胞表面や細胞外基質の抗原に抗体が結合して障害を招く", "Ⅱ型 ―――― 肥満細胞表面の IgE 抗体と抗原の結合により生理活性物質放出", "Ⅲ型 ―――― 抗原と抗体の結合物が組織に沈着して障害を招く", "Ⅳ型 ―――― T 細胞による細胞性免疫反応", "Ⅰ型 ―――― 気管支喘息"],
+    correctIndices: [0, 1],
+    isMultiSelect: true,
+    [span_104](start_span)[span_105](start_span)explanation: "1：これはII型の説明です。2：これはI型（即時型）の説明です[span_104](end_span)[span_105](end_span)。"
+  },
+  {
+    id: 404,
+    category: "令和3年度第1回",
+    text: "54 骨格筋について正しいものはどれか。2つ選べ。",
+    options: ["不随意筋である", "主に四肢、体幹、顔面に付着する", "上肢では屈筋群が弱い", "両端は通常、腱となり関節をまたいで骨や靭帯に付く", "交感神経、副交感神経によって二重の支配を受ける"],
+    correctIndices: [1, 4],
+    isMultiSelect: true,
+    [span_106](start_span)[span_107](start_span)explanation: "骨格筋は随意筋であり、関節をまたいで付着します。体性神経（運動神経）の支配を受けます[span_106](end_span)[span_107](end_span)。"
+  },
+  {
+    id: 405,
+    category: "令和3年度第1回",
+    text: "55 皮膚について正しいのはどれか。1つ選べ。",
+    options: ["皮膚は上層から順に、表皮、真皮、皮下脂肪組織の3層で構成される", "皮膚は体重の5%を占める", "皮膚の厚さは平均2mm である", "真皮は垢として脱落する", "真皮には触覚を完治するメルケル細胞が存在する"],
+    correctIndex: 0,
+    [span_108](start_span)[span_109](start_span)explanation: "皮膚は表面から表皮、真皮、皮下組織（皮下脂肪）の層構造になっています[span_108](end_span)[span_109](end_span)。"
+  },
+  // --- PAGE 12 ---
+  {
+    id: 406,
+    category: "令和3年度第1回",
+    text: "56 皮膚の役割で誤っているのはどれか。1 つ選べ。",
+    options: ["クッションとして働き、生体内部を保護している", "基底細胞が残存していれば、損傷した際も治癒する", "体表面から気化する水分の量を調整している", "表皮でビタミン C が合成される", "紫外線を吸収し防護する"],
+    correctIndex: 3,
+    [span_110](start_span)[span_111](start_span)explanation: "皮膚（表皮）で日光によって合成されるのは「ビタミンD」です[span_110](end_span)[span_111](end_span)。"
+  },
+  {
+    id: 407,
+    category: "令和3年度第1回",
+    text: "57 線容における基本的な反応に関連する物質はどれか。2つ選べ。",
+    options: ["トロンビン", "アクチベータ", "プラスミノゲン", "フィブリン", "プラスミン"],
+    correctIndices: [2, 4],
+    isMultiSelect: true,
+    [span_112](start_span)[span_113](start_span)explanation: "プラスミノゲンが活性化されてプラスミンになり、フィブリン（血栓）を溶解します[span_112](end_span)[span_113](end_span)。"
+  },
+  {
+    id: 408,
+    category: "令和3年度第1回",
+    text: "58 つぎのうち、正しいものを1つ選べ。",
+    options: ["子宮の長さは9~10cmである。", "子宮は常時腹部の触診で触れることができる。", "子宮の下方1/3を子宮体部とよぶ。", "子宮体部はほとんどが平滑筋でできている。", "子宮は外部と腹腔がつながっており、腸閉塞になることがある。"],
+    correctIndex: 3,
+    [span_114](start_span)[span_115](start_span)explanation: "子宮壁の大部分は「子宮筋層」という厚い平滑筋層でできています[span_114](end_span)[span_115](end_span)。"
+  },
+  {
+    id: 409,
+    category: "令和3年度第1回",
+    text: "59 次のうち、細菌感染に関連する血球はどれか。1つ選べ。",
+    options: ["赤血球", "好中球", "好酸球", "リンパ球", "好塩基球"],
+    correctIndex: 1,
+    [span_116](start_span)[span_117](start_span)explanation: "好中球は細菌感染時の初期防衛において中心的な役割を果たし、貪食・殺菌を行います[span_116](end_span)[span_117](end_span)。"
+  },
+  {
+    id: 410,
+    category: "令和3年度第1回",
+    text: "60 つぎのうち、脾臓の役割について正しいものはどれか。1つ選べ。",
+    options: ["脾臓の重さは200g~230gである。", "硬い臓器で、強い衝撃を受けても出血は少ない。", "後腹膜臓器である。", "新しい血球の造成に重要な役割を果たす。", "各種サイトカインの分泌を行う。"],
+    correctIndex: 4,
+    [span_118](start_span)[span_119](start_span)explanation: "脾臓は免疫機能を担い、各種サイトカインを分泌して免疫応答を調節します[span_118](end_span)[span_119](end_span)。"
+  },
+  // --- PAGE 13 ---
+  {
+    id: 411,
+    category: "令和3年度第1回",
+    text: "61 次のうち誤っているものを1つ選べ。",
+    options: ["基礎代謝において、成人の場合体重 1kg当たり約 30kcal 程度である。", "ブドウ糖は1分子が細胞内で分解されて2分子のピルビン酸となる。", "解糖は酸素を必要としない嫌気性代謝とよばれる。", "脂質は代謝を受けて脂肪酸とグリセロールになる。", "ピルビン酸は酵素の働きで乳酸に変化する。"],
+    correctIndex: 0,
+    [span_120](start_span)[span_121](start_span)explanation: "成人の基礎代謝量は性別や年齢で異なりますが、概ね体重1kgあたり20〜25kcal程度です（30kcalは総エネルギー消費量に近い数値です）[span_120](end_span)[span_121](end_span)。"
+  },
+  {
+    id: 412,
+    category: "令和3年度第1回",
+    text: "62 血液の酸素化、二酸化炭素の排出について正しいものを2つ選べ。",
+    options: ["肺胞中では約 100mmHg あった酸素分圧は、血漿中では 90mmHg となる。", "低酸素状態では酸素解離曲線は本来の位置から右へ移動する。", "組織内の代謝において作られた二酸化炭素は一時的に炭酸水素イオンになる。" , "ヘモグロビンは生体の防御、恒常性の維持には対応していない。", "成人男子では血液 100ml 当たり、20g のヘモグロビンが存在する。"],
+    correctIndices: [1, 2],
+    isMultiSelect: true,
+    [span_122](start_span)[span_123](start_span)explanation: "アシドーシスや体温上昇、2,3-DPG増加（低酸素など）により酸素解離曲線は右方移動します。CO2は赤血球内で重炭酸イオン（HCO3-）として運ばれます[span_122](end_span)[span_123](end_span)。"
+  },
+  {
+    id: 413,
+    category: "令和3年度第1回",
+    text: "63 精巣上体について正しいものを1つ選べ。",
+    options: ["精子の造成をする。", "精子を輸送する。", "男性ホルモンの分泌", "睾丸ともよばれる。", "全長 30cm~35cm 程度である。"],
+    correctIndex: 1,
+    [span_124](start_span)[span_125](start_span)explanation: "精巣（睾丸）で造られた精子は、精巣上体を通る間に成熟し輸送されます[span_124](end_span)[span_125](end_span)。"
+  },
+  {
+    id: 414,
+    category: "令和3年度第1回",
+    text: "64 女性生殖器に関する説明で誤っているものを1つ選べ。",
+    options: ["恥丘においては思春期以降、陰毛が生える。", "大陰唇は男性の陰嚢に相当する。", "人によっては小陰唇の大きさが大陰唇をはるかに越えるものもある。", "陰核は男性の陰茎に相当する。", "膣前庭にあるアポクリン腺は感染しやすい。"],
+    correctIndex: 4,
+    [span_126](start_span)[span_127](start_span)explanation: "膣前庭に開口する腺で感染・炎症（膿瘍）を起こしやすいのは「バルトリン腺」です[span_126](end_span)[span_127](end_span)。"
+  },
+  {
+    id: 415,
+    category: "令和3年度第1回",
+    text: "65 性周期に関して正しいものを1つ選べ。",
+    options: ["卵巣からは黄体化ホルモンが分泌される。", "排卵後は基礎体温が低下する。", "月経前には腰痛がおこることもある。", "4.1 回の月経で出る経血量は 30ml がもっとも多い。", "月経周期の正常範囲は29日~40日である。"],
+    correctIndex: 2,
+    [span_128](start_span)[span_129](start_span)explanation: "月経前にはホルモンバランスの変化により、腰痛や腹痛などの症状が出ることがあります[span_128](end_span)[span_129](end_span)。"
+  },
+  // --- PAGE 14 ---
+  {
+    id: 416,
+    category: "令和3年度第1回",
+    text: "66 細胞外液の浸透圧を規定するものはどれか。1つ選べ。",
+    options: ["カリウム", "カルシウム", "炭酸水素イオン", "ナトリウム", "乳酸"],
+    correctIndex: 3,
+    [span_130](start_span)[span_131](start_span)explanation: "細胞外液の浸透圧は、主要な陽イオンであるナトリウムイオン（Na+）濃度によって主に決定されます[span_130](end_span)[span_131](end_span)。"
+  },
+  {
+    id: 417,
+    category: "令和3年度第1回",
+    text: "67 膵臓から分泌されるホルモンで正しいのはどれか。2つ選べ。",
+    options: ["コルチゾール", "インスリン", "エストロゲン", "グルカゴン", "プロゲステロン"],
+    correctIndices: [1, 3],
+    isMultiSelect: true,
+    [span_132](start_span)[span_133](start_span)explanation: "膵ランゲルハンス島のβ細胞からインスリンが、α細胞からグルカゴンが分泌されます[span_132](end_span)[span_133](end_span)。"
+  },
+  {
+    id: 418,
+    category: "令和3年度第1回",
+    text: "68 アドレナリンの主な作用で正しいものはどれか。2つ選べ。",
+    options: ["心機能促進", "代謝機能促進", "末梢血管収縮作用", "末梢血管拡張作用", "熱産生の促進"],
+    correctIndices: [0, 2],
+    isMultiSelect: true,
+    [span_134](start_span)[span_135](start_span)explanation: "アドレナリンはβ1作用による心機能促進と、α1作用による強力な末梢血管収縮を引き起こします[span_134](end_span)[span_135](end_span)。"
+  },
+  {
+    id: 319,
+    category: "令和3年度第1回",
+    text: "69 酸素瀑布（酸素カスケード）の組み合わせで誤っているのはどれか。1つ選べ。",
+    options: ["肺胞気 ―――― 150mmHg", "動脈血 ―――― 95mmHg", "毛細血管―――― 40mmHg", "組織 ―――― 15mmHg", "ミトコンドリア― 1mmHg"],
+    correctIndex: 0,
+    [span_136](start_span)[span_137](start_span)explanation: "肺胞気酸素分圧は加湿やCO2の混入により約100〜105mmHgとなります。150mmHgは大気の吸入直後の値です[span_136](end_span)[span_137](end_span)。"
+  },
+  {
+    id: 420,
+    category: "令和3年度第1回",
+    text: "70 海抜0mでの大気の酸素分圧はどれか。1つ選べ。",
+    options: ["120mmHg", "140mmHg", "160mmHg", "180mmHg", "200mmHg"],
+    correctIndex: 2,
+    [span_138](start_span)[span_139](start_span)explanation: "海抜0mの気圧は760mmHgで、酸素濃度は約21%であるため、760 × 0.21 ≒ 160mmHgとなります[span_138](end_span)[span_139](end_span)。"
   }
 ];
 
@@ -2643,6 +3236,7 @@ const questionData = [
 // または
 // export default questions; 
 // 環境に合わせて適宜変更してください。
+
 
 
 
