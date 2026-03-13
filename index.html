@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>救急救命士錬成試験対策 Webアプリ</title>
+    <style>
+        /* CSS変数定義: JavaScriptで動的に変更されます */
+        :root {
+            --question-font-size: 1.05rem; 
+            --option-font-size: 0.95rem;
+        }
+        
+        /* --- デザイン設定 (CSS) --- */
+        body {
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            width: 100%;
+            max-width: 600px;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+        h1 {
+            font-size: 1.2rem;
+            color: #1a73e8;
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+        
+        /* コントロール全体をまとめるアコーディオンのスタイル */
+        details.settings-accordion {
+            background-color: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            padding: 10px 15px;
+        }
+        details.settings-accordion summary {
+            font-weight: bold;
+            color: #555;
+            cursor: pointer;
+            list-style: none; /* デフォルトの矢印を消す (Chrome/Safari/Firefox) */
+            display: flex;
+            align-items: center;
+            outline: none;
+        }
+        details.settings-accordion summary::-webkit-details-marker {
+            display: none; /* デフォルトの矢印を消す (旧Webkit) */
+        }
+        details.settings-accordion summary::target-text {
+             display: none;
+        }
+        details.settings-accordion summary::before {
+            content: "▶"; /* 閉じた状態のアイコン */
+            display: inline-block;
+            margin-right: 8px;
+            font-size: 0.9em;
+            transition: transform 0.2s; /* アニメーション */
+        }
+        details.settings-accordion[open] summary::before {
+            transform: rotate(90deg); /* 開いた状態は下向き */
+        }
+        details.settings-accordion[open] summary {
+            margin-bottom: 15px; /* 開いた時の下の余白 */
+            border-bottom: 1px dashed #ccc;
+            padding-bottom: 8px;
+        }
+        .settings-content {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        /* -- アコーディオン内の要素マージンをリセット -- */
+        .category-controls, .mode-controls {
+            margin-bottom: 0px; 
+        }
+
+        /* カテゴリーと出題順のコントロールをまとめる */
+        .category-controls {
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap; 
+            gap: 15px;
+        }
+        .category-controls label, .category-controls select {
+            font-size: 1rem;
+        }
+        .category-controls select {
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        /* モードコントロールと文字サイズコントロールをまとめる */
+        .mode-controls {
+            display: flex;
+            flex-direction: column; /* 要素を縦に並べる */
+            align-items: stretch; /* 幅を揃える */
+            gap: 10px; /* 要素間の隙間 */
+        }
+        
+        /* 誤答レビュー、リセット、文字サイズを横並びにするラッパー */
+        .mode-row { 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+        .mode-row > * {
+            flex-grow: 1; /* 均等な幅を確保 */
+        }
+
+        /* 文字サイズコントロールのスタイル調整 */
+        .font-size-control {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            justify-content: flex-end; /* 右寄せ */
+            flex-shrink: 0; /* サイズ変更時に縮まないように */
+        }
+        .font-size-control label {
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+        .font-size-control select {
+            padding: 5px 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 0.9rem;
+            width: auto; /* サイズに合わせて調整 */
+            flex-shrink: 0;
+        }
+        
+        /* 誤答レビューボタンとリセットボタンのスタイル */
+        #review-mode-btn {
+            padding: 10px 20px;
+            border: 2px solid #e76f51; 
+            background: white; 
+            color: #e76f51; 
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        #review-mode-btn[style*="background-color: rgb(231, 111, 81)"] {
+            background-color: #e76f51 !important;
+            color: white !important;
+        }
+        #reset-review-btn {
+            padding: 10px 15px;
+            border: 2px solid #ccc; 
+            background: #f4f4f4; 
+            color: #777; 
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        /* 5問モードボタンのスタイル */
+        #quick-five-btn {
+            padding: 10px 20px;
+            border: 2px solid #2a9d8f; 
+            background: white; 
+            color: #2a9d8f; 
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%; 
+        }
+
+        #quick-five-btn[style*="background-color: rgb(42, 157, 143)"] {
+            background-color: #2a9d8f !important;
+            color: white !important;
+        }
+
+        .question-box {
+            margin-bottom: 20px;
+        }
+        .question-label {
+            display: inline-block;
+            background-color: #e8f0fe;
+            color: #1a73e8;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .question-text {
+            font-size: var(--question-font-size); 
+            font-weight: bold;
+            line-height: 1.5;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option-btn {
+            padding: 16px 20px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 10px;
+            font-size: var(--option-font-size); 
+            color: #444;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            position: relative;
+        }
+        .option-btn:hover {
+            background-color: #f8f9fa;
+            border-color: #bbb;
+        }
+        .option-btn:active {
+            transform: scale(0.98);
+        }
+        /* 複数選択時の選択状態 */
+        .option-btn.selected {
+            border-color: #1a73e8;
+            background-color: #e8f0fe;
+            box-shadow: 0 0 5px rgba(26, 115, 232, 0.5);
+        }
+
+        /* 正解・不正解時のスタイル */
+        .option-btn.correct {
+            background-color: #e6fffa !important;
+            border-color: #2a9d8f !important;
+            color: #2a9d8f;
+            font-weight: bold;
+        }
+        .option-btn.correct::after {
+            content: "◎";
+            position: absolute;
+            right: 20px;
+            font-size: 1.2rem;
+        }
+        .option-btn.wrong {
+            background-color: #fff5f5 !important;
+            border-color: #e76f51 !important;
+            color: #e76f51;
+        }
+        .option-btn.wrong::after {
+            content: "✕";
+            position: absolute;
+            right: 20px;
+            font-size: 1.2rem;
+        }
+
+        /* 結果表示エリア */
+        .result-area {
+            margin-top: 25px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 12px;
+            border-left: 5px solid #ccc;
+            display: none; 
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .result-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .explanation {
+            font-size: 0.95rem;
+            color: #555;
+            line-height: 1.7;
+        }
+        .next-btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #1a73e8, #0056b3);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-top: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(26, 115, 232, 0.3);
+            transition: opacity 0.3s;
+        }
+        .next-btn:hover {
+            opacity: 0.9;
+        }
+        /* 判定ボタン用のスタイル */
+        .check-multi-btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background-color: #28a745; 
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-top: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(40, 167, 69, 0.3);
+            transition: opacity 0.3s;
+        }
+        .check-multi-btn:hover {
+            opacity: 0.9;
+        }
+        
+        /* 成績ダッシュボードのスタイル */
+        .dashboard {
+            margin-top: 25px;
+            padding: 20px;
+            background-color: #e8f5e9; /* 薄い緑色で学習進捗を表現 */
+            border-radius: 12px;
+            border: 1px solid #c8e6c9;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .dashboard h2 {
+            font-size: 1.1rem;
+            color: #388e3c; /* 濃い緑色 */
+            border-bottom: 2px solid #a5d6a7;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+        .score-summary {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .score-summary p {
+            font-size: 0.95rem;
+            margin: 5px 0;
+        }
+        .score-value {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #388e3c;
+            display: block;
+            line-height: 1.1;
+        }
+
+        /* 分野別正答率リスト */
+        .category-scores {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+        .category-scores li {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed #e0e0e0;
+        }
+        .category-scores li:last-child {
+            border-bottom: none;
+        }
+        .category-scores .category-name {
+            font-weight: 500;
+        }
+        .category-scores .rate {
+            font-weight: bold;
+            color: #1a73e8; /* 青色で強調 */
+        }
+
+        /* スコアが低い場合の警告色 */
+        .category-scores .rate.low {
+            color: #e76f51; /* 赤オレンジ色 */
+        }
+        
+        /* --- レスポンシブ対応 (Media Query) --- */
+        @media (max-width: 550px) {
+            body {
+                padding: 0px; /* パディングをなくして全画面に */
+            }
+            .card {
+                padding: 15px 10px; /* カードのパディングもさらに減らす */
+                border-radius: 0; /* モバイルでは角丸をなくす */
+                min-height: 100vh; /* 画面全体を使う */
+            }
+            h1 {
+                margin-bottom: 12px;
+                font-size: 1.1rem;
+            }
+            
+            /* コントロールエリアの調整 */
+            details.settings-accordion {
+                margin-bottom: 15px; /* アコーディオン下の余白も少し詰める */
+            }
+            .category-controls, .mode-row {
+                flex-direction: column; /* 縦に積み重ねる */
+                gap: 8px;
+                align-items: stretch; /* 幅を揃える */
+            }
+            .category-controls label {
+                text-align: left; /* ラベルを左寄せ */
+            }
+            
+            .category-controls select,
+            #review-mode-btn, 
+            #reset-review-btn, 
+            #quick-five-btn {
+                width: 100%; /* フル幅にする */
+                box-sizing: border-box; 
+            }
+            
+            /* 文字サイズコントロールを右に寄せる */
+            .font-size-control {
+                justify-content: flex-start; /* 左寄せに変更して、他の要素と揃える */
+                margin-top: 5px; /* 上部に少しスペース */
+            }
+            .font-size-control label {
+                flex-shrink: 0; /* ラベルが縮まないように */
+            }
+
+            /* オプションボタンのパディングを調整 */
+            .option-btn {
+                padding: 14px 16px;
+                font-size: 0.9rem; /* オプションボタンのフォントを少し小さく */
+            }
+            
+            /* ダッシュボードのフォントサイズ調整 */
+            .dashboard {
+                padding: 15px;
+            }
+            .score-value {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body onload="updateReviewButton(); initializeFontSize()">
+
+    <div class="card">
+        <h1>🚑 救急救命士錬成試験対策</h1>
+        
+        <details class="settings-accordion">
+            <summary>⚙️ 出題設定（試験・モード・文字サイズ）</summary>
+            <div class="settings-content">
+                <div class="category-controls">
+                    <label for="category-select">試験を選択:</label> 
+                    <select id="category-select" onchange="loadRandomQuestion()">
+                        </select>
+                    
+                    <label for="order-select">出題順:</label>
+                    <select id="order-select" onchange="loadRandomQuestion()">
+                        <option value="random">ランダム（スマート）</option>
+                        <option value="sequential">ID順</option>
+                    </select>
+                </div>
+                
+                <div class="mode-controls">
+                    <div class="mode-row">
+                        <button id="review-mode-btn" onclick="toggleReviewMode()">
+                            誤答レビューモード (0問)
+                        </button>
+                        <button id="reset-review-btn" onclick="resetIncorrectQuestions()">
+                            履歴リセット
+                        </button>
+                        
+                        <div class="font-size-control">
+                            <label for="font-size-select">文字サイズ:</label>
+                            <select id="font-size-select" onchange="setFontSize(this.value)">
+                                <option value="small">小</option>
+                                <option value="medium">中</option>
+                                <option value="large">大</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button id="quick-five-btn" onclick="startQuickFiveMode()">
+                        サクサク5問モードを開始
+                    </button>
+                </div>
+            </div>
+        </details>
+
+        <div id="quiz-container">
+            <div class="question-box">
+                <span class="question-label">問題</span>
+                <div class="question-text" id="question">
+                    読み込み中...
+                </div>
+            </div>
+            
+            <div class="options" id="options">
+                </div>
+        </div>
+
+        <div class="result-area" id="result">
+            <span class="result-title" id="result-title"></span>
+            <div class="explanation">
+                <strong>【解説】</strong><br>
+                <span id="explanation-text"></span>
+            </div>
+            <button class="next-btn" onclick="loadRandomQuestion()">次の問題へ</button>
+        </div>
+        
+        <div class="dashboard" id="score-dashboard">
+            <h2>📊 学習進捗ダッシュボード</h2>
+            
+            <div class="score-summary">
+                <p>総合正答率</p>
+                <span id="overall-rate" class="score-value">--%</span>
+                <p>（合計 <span id="overall-total">--</span> 問）</p>
+            </div>
+            
+            <h3>試験別正答率</h3>
+            <ul class="category-scores" id="category-score-list">
+                <li>計算中...</li>
+            </ul>
+        </div>
+        
+    </div>
+
+    <script src="questions.js"></script>
+
+    <script>
+        // --- データ永続化と管理 ---
+        const INCORRECT_KEY = 'incorrectQuestionIds';
+        const HISTORY_KEY = 'questionHistory'; 
+        const FONT_SIZE_KEY = 'appFontSize'; 
+        let reviewMode = false;
+        let availableCategories = []; 
+        let currentSequentialIndex = 0; 
+
+        // 5問モードの状態管理
+        let quickFiveMode = false;
+        let quickFiveQuestions = []; // 出題予定の問題IDリスト
+        let quickFiveIndex = 0;      // 現在の問題インデックス
+        let quickFiveResults = []; // 5問モードの結果を保存する配列
+
+        function getIncorrectQuestions() {
+            const stored = localStorage.getItem(INCORRECT_KEY);
+            return stored ? JSON.parse(stored) : [];
+        }
+
+        function saveIncorrectQuestions(incorrectIds) {
+            localStorage.setItem(INCORRECT_KEY, JSON.stringify(incorrectIds));
+            updateReviewButton(); 
+        }
+
+        function addIncorrectQuestion(id) {
+            let incorrectIds = getIncorrectQuestions();
+            if (!incorrectIds.includes(id)) {
+                incorrectIds.push(id);
+                saveIncorrectQuestions(incorrectIds);
+            }
+        }
+
+        function removeIncorrectQuestion(id) {
+            let incorrectIds = getIncorrectQuestions();
+            const index = incorrectIds.indexOf(id);
+            if (index > -1) {
+                incorrectIds.splice(index, 1);
+                saveIncorrectQuestions(incorrectIds);
+            }
+        }
+        
+        // --- 問題の学習履歴管理 ---
+        function getQuestionHistory() {
+            const stored = localStorage.getItem(HISTORY_KEY);
+            return stored ? JSON.parse(stored) : {};
+        }
+
+        function updateQuestionHistory(id, isCorrect) {
+            const history = getQuestionHistory();
+            const current = history[id] || { total: 0, correct: 0, lastCorrect: 0 }; 
+            
+            current.total++;
+            
+            if (isCorrect) {
+                current.correct++;
+                current.lastCorrect = Date.now(); 
+                removeIncorrectQuestion(id); 
+            } else {
+                addIncorrectQuestion(id); 
+            }
+            
+            history[id] = current;
+            localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+            updateReviewButton();
+            updateScoreDashboard(); 
+        }
+        
+        // --- フォントサイズ管理機能 ---
+        const FONT_SIZES = {
+            small: { question: '0.9rem', option: '0.85rem' },
+            medium: { question: '1.05rem', option: '0.95rem' }, 
+            large: { question: '1.2rem', option: '1.1rem' }
+        };
+
+        function getFontSizeSetting() {
+            return localStorage.getItem(FONT_SIZE_KEY) || 'medium'; 
+        }
+
+        function setFontSize(size) {
+            if (!FONT_SIZES[size]) return;
+
+            // 1. CSS変数を設定（動的にフォントサイズを変更）
+            document.documentElement.style.setProperty('--question-font-size', FONT_SIZES[size].question);
+            document.documentElement.style.setProperty('--option-font-size', FONT_SIZES[size].option);
+
+            // 2. 設定を保存
+            localStorage.setItem(FONT_SIZE_KEY, size);
+            
+            // 3. ドロップダウンの表示を同期
+            const select = document.getElementById('font-size-select');
+            if (select) {
+                select.value = size;
+            }
+        }
+
+        function initializeFontSize() {
+            const savedSize = getFontSizeSetting();
+            setFontSize(savedSize);
+        }
+        // ------------------------------------
+        
+        // --- 成績計算・表示機能 ---
+
+        function calculateScores() {
+            const history = getQuestionHistory();
+            let totalQuestions = 0;
+            let totalCorrect = 0;
+            const categoryStats = {}; // { 'カテゴリー名': { total: 0, correct: 0 } }
+            
+            // カテゴリーリストを準備（設定されていない問題はスキップ）
+            const questionsByCategory = questionData.reduce((acc, q) => {
+                if (q.category) {
+                    if (!acc[q.category]) {
+                        acc[q.category] = [];
+                    }
+                    acc[q.category].push(q);
+                }
+                return acc;
+            }, {});
+            
+            // 1. 全問題の統計を計算
+            for (const id in history) {
+                const h = history[id];
+                totalQuestions += h.total;
+                totalCorrect += h.correct;
+                
+                // 2. 分野別の統計も同時に計算
+                const q = questionData.find(q => q.id == id);
+                if (q && q.category) {
+                    const category = q.category;
+                    if (!categoryStats[category]) {
+                        categoryStats[category] = { total: 0, correct: 0 };
+                    }
+                    categoryStats[category].total += h.total;
+                    categoryStats[category].correct += h.correct;
+                }
+            }
+            
+            // 3. 未回答のカテゴリーを0%でリストに追加（未回答でも表示するため）
+            for (const category in questionsByCategory) {
+                if (!categoryStats[category]) {
+                    categoryStats[category] = { total: 0, correct: 0 };
+                }
+            }
+            
+            return { totalQuestions, totalCorrect, categoryStats };
+        }
+
+
+        function updateScoreDashboard() {
+            const { totalQuestions, totalCorrect, categoryStats } = calculateScores();
+            
+            const overallRateElement = document.getElementById('overall-rate');
+            const overallTotalElement = document.getElementById('overall-total');
+            const categoryListElement = document.getElementById('category-score-list');
+            
+            // 総合正答率の表示
+            const overallRate = totalQuestions > 0 ? ((totalCorrect / totalQuestions) * 100).toFixed(1) : 0;
+            overallRateElement.innerText = `${overallRate}%`;
+            overallTotalElement.innerText = totalQuestions;
+            
+            // 分野別正答率の表示
+            categoryListElement.innerHTML = '';
+            
+            const sortedCategories = Object.keys(categoryStats).sort();
+
+            sortedCategories.forEach(category => {
+                const stats = categoryStats[category];
+                const categoryTotal = stats.total;
+                const categoryCorrect = stats.correct;
+                
+                const rate = categoryTotal > 0 ? ((categoryCorrect / categoryTotal) * 100).toFixed(1) : 0;
+                
+                const listItem = document.createElement('li');
+                
+                let rateClass = '';
+                // 5問以上回答かつ正答率60%未満で警告
+                if (categoryTotal > 4 && rate < 60) { 
+                     rateClass = 'low';
+                }
+
+                // カテゴリー名をそのまま「試験名」として使用
+                listItem.innerHTML = `
+                    <span class="category-name">${category}</span>
+                    <span class="rate ${rateClass}">
+                        ${rate}%
+                        <span style="font-size:0.8em; color:#777; margin-left:8px;">
+                            (${categoryCorrect}/${categoryTotal})
+                        </span>
+                    </span>
+                `;
+                categoryListElement.appendChild(listItem);
+            });
+        }
+        
+        // --- UIとモード制御 ---
+        function setupCategories() {
+            if (typeof questionData === 'undefined') return;
+
+            const categories = questionData.map(q => q.category).filter(Boolean);
+            availableCategories = [...new Set(categories)].sort(); 
+            
+            const select = document.getElementById('category-select');
+            select.innerHTML = ''; 
+
+            const allOption = document.createElement('option');
+            allOption.value = 'all';
+            // 全ての試験に修正済み
+            allOption.innerText = '全ての試験';
+            select.appendChild(allOption);
+
+            availableCategories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category;
+                option.innerText = category;
+                select.appendChild(option);
+            });
+        }
+
+        function updateReviewButton() {
+            const incorrectIds = getIncorrectQuestions();
+            const count = incorrectIds.length;
+            const btn = document.getElementById('review-mode-btn');
+
+            if (btn) {
+                btn.innerText = `誤答レビューモード (${count}問)`;
+                
+                if (count === 0 && !reviewMode) {
+                    btn.disabled = true;
+                } else {
+                    btn.disabled = false;
+                }
+                
+                if (reviewMode) {
+                    btn.style.backgroundColor = '#e76f51';
+                    btn.style.color = 'white';
+                    if (count === 0) {
+                        toggleReviewMode();
+                    }
+                } else {
+                    btn.style.backgroundColor = 'white';
+                    btn.style.color = '#e76f51';
+                }
+            }
+        }
+        
+        function resetIncorrectQuestions() {
+            if (confirm("本当に誤答レビューの履歴と学習履歴を全てリセットしてもよろしいですか？この操作は元に戻せません。")) {
+                localStorage.removeItem(INCORRECT_KEY);
+                localStorage.removeItem(HISTORY_KEY); 
+                reviewMode = false;
+                currentSequentialIndex = 0; 
+                endQuickFiveMode(false); // 5問モードを強制終了 (結果表示なし)
+                updateReviewButton();
+                loadRandomQuestion();
+                updateScoreDashboard(); 
+                alert("誤答レビュー履歴と学習履歴をリセットしました。");
+            }
+        }
+
+        function toggleReviewMode() {
+            const incorrectIds = getIncorrectQuestions();
+            
+            if (!reviewMode) {
+                if (incorrectIds.length === 0) {
+                    alert('現在、誤答履歴はありません。');
+                    return;
+                }
+                reviewMode = true;
+                endQuickFiveMode(false); // 5問モードを強制終了 (結果表示なし)
+                alert(`誤答レビューモードを開始します。間違えた ${incorrectIds.length} 問から出題します。`);
+            } else {
+                reviewMode = false;
+                alert('通常モードに戻ります。');
+            }
+            updateReviewButton();
+            loadRandomQuestion();
+        }
+
+        // 5問モードの開始
+        function startQuickFiveMode() {
+            if (typeof questionData === 'undefined' || questionData.length === 0) {
+                 alert("問題データがありません。");
+                 return;
+            }
+
+            quickFiveMode = true;
+            quickFiveQuestions = [];
+            quickFiveIndex = 0;
+            quickFiveResults = []; 
+
+            // 他のモードを強制終了
+            reviewMode = false;
+            updateReviewButton();
+
+            // 全問題IDを取得し、完全にランダムにシャッフル
+            let allIds = questionData.map(q => q.id);
+            // Fisher-Yates shuffle
+            for (let i = allIds.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [allIds[i], allIds[j]] = [allIds[j], allIds[i]];
+            }
+
+            // シャッフルされたリストから最初の5問を選択
+            quickFiveQuestions = allIds.slice(0, 5);
+            
+            // UIを更新
+            document.getElementById('quick-five-btn').style.backgroundColor = '#2a9d8f';
+            document.getElementById('quick-five-btn').style.color = 'white';
+            document.getElementById('quick-five-btn').innerText = `サクサク5問モード (1 / 5)`;
+            
+            // 他のコントロールを一時的に無効化
+            document.getElementById('review-mode-btn').disabled = true;
+            document.getElementById('category-select').disabled = true;
+            document.getElementById('order-select').disabled = true;
+            
+            // 問題エリアを再表示（前の結果が残っている場合があるため）
+            document.getElementById('quiz-container').style.display = 'block';
+
+            // 1問目をロード
+            loadRandomQuestion();
+        }
+
+        // 5問モードの終了 (showResult: 結果を表示するかどうか)
+        function endQuickFiveMode(showResult = true) {
+            
+            // 結果表示
+            if (showResult) {
+                // 結果の集計
+                const total = quickFiveResults.length;
+                const correctCount = quickFiveResults.filter(r => r.isCorrect).length;
+                const rate = total > 0 ? ((correctCount / total) * 100).toFixed(1) : 0;
+                
+                // UI要素を取得
+                const resultArea = document.getElementById('result');
+                const resultTitle = document.getElementById('result-title');
+                const explanationSpan = document.getElementById('explanation-text');
+                const nextBtn = document.querySelector('.next-btn');
+
+                // 問題エリアを非表示
+                document.getElementById('quiz-container').style.display = 'none';
+
+                resultTitle.innerText = "✨ サクサク5問モード終了！";
+                resultTitle.style.color = "#1a73e8";
+                resultArea.style.borderLeftColor = "#1a73e8";
+
+                // 結果のサマリーを生成
+                let summaryHtml = `
+                    <h3>【結果サマリー】</h3>
+                    <p style="font-size:1.5rem; font-weight:bold; color:#1a73e8;">
+                        ${correctCount} / ${total} 問正解 （正答率: ${rate}%）
+                    </p>
+                    <p style="margin-top:20px;">
+                        次の問題へ進むと、通常のランダム出題モードに戻ります。
+                    </p>
+                `;
+
+                explanationSpan.innerHTML = summaryHtml;
+                nextBtn.innerText = '通常モードへ戻る';
+                
+                // 次ボタンを押したときの動作：問題エリアを再表示し、通常の問題をロード
+                nextBtn.onclick = () => {
+                    document.getElementById('quiz-container').style.display = 'block';
+                    // loadRandomQuestionを呼ぶ前にresultAreaを隠す
+                    document.getElementById('result').style.display = 'none'; 
+                    loadRandomQuestion();
+                };
+
+                resultArea.style.display = 'block';
+                
+                alert(`サクサク5問モードを終了しました。${correctCount}/${total} 問正解です！`);
+            } else {
+                // 結果表示をしない場合、resultAreaを隠す
+                document.getElementById('result').style.display = 'none';
+                document.getElementById('quiz-container').style.display = 'block';
+            }
+
+            // 状態をリセット
+            quickFiveMode = false;
+            quickFiveQuestions = [];
+            quickFiveIndex = 0;
+            quickFiveResults = [];
+
+            // UIをリセット
+            document.getElementById('quick-five-btn').style.backgroundColor = 'white';
+            document.getElementById('quick-five-btn').style.color = '#2a9d8f';
+            document.getElementById('quick-five-btn').innerText = `サクサク5問モードを開始`;
+            
+            document.getElementById('review-mode-btn').disabled = false;
+            document.getElementById('category-select').disabled = false;
+            document.getElementById('order-select').disabled = false;
+        }
+
+        // --- 問題の読み込みロジック (スマート出題に対応) ---
+        let currentQuestion = null;
+
+        if (typeof questionData === 'undefined') {
+            alert("エラー：'questions.js' が見つかりません。");
+            document.getElementById('question').innerText = "データの読み込みに失敗しました。";
+        }
+
+        function loadRandomQuestion() {
+            // 結果エリアを隠してリセット
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('options').innerHTML = '';
+            
+            let q;
+            let candidateQuestions = [];
+            const incorrectIds = getIncorrectQuestions();
+            
+            const categorySelect = document.getElementById('category-select');
+            const orderSelect = document.getElementById('order-select'); 
+            
+            const selectedCategory = categorySelect ? categorySelect.value : 'all';
+            const selectedOrder = orderSelect ? orderSelect.value : 'random'; 
+
+            // 1. カテゴリーで問題リストをフィルタリング
+            let filteredQuestions = questionData.filter(q => {
+                return selectedCategory === 'all' || q.category === selectedCategory;
+            });
+            
+            // ID順に並べ替えておく
+            filteredQuestions.sort((a, b) => a.id - b.id);
+
+            // 5問モードの分岐
+            if (quickFiveMode) {
+                if (quickFiveIndex >= quickFiveQuestions.length) {
+                    endQuickFiveMode(true); // 最後の問題まで解答したら結果を表示して終了
+                    return;
+                }
+
+                // 5問モードでは、指定されたIDの問題を特定
+                const questionId = quickFiveQuestions[quickFiveIndex];
+                q = questionData.find(question => question.id === questionId);
+                
+                if (!q) {
+                    console.error(`Error: Question ID ${questionId} not found.`);
+                    endQuickFiveMode(false);
+                    loadRandomQuestion();
+                    return;
+                }
+            }
+            // 5問モードでなければ、既存のロジックを継続
+            else if (reviewMode && incorrectIds.length > 0) {
+                // 2-1. レビューモード: フィルタリングされた中から、誤答リストにある問題のみを選出
+                candidateQuestions = filteredQuestions.filter(q => incorrectIds.includes(q.id));
+                
+                if (candidateQuestions.length === 0) {
+                    alert(`選択中の試験（${selectedCategory}）には、誤答した問題がありませんでした。通常モードに戻ります。`);
+                    toggleReviewMode();
+                    return;
+                }
+                
+                // レビューモードではランダム出題
+                const randomIndex = Math.floor(Math.random() * candidateQuestions.length);
+                q = candidateQuestions[randomIndex];
+
+            } else if (selectedOrder === 'sequential') {
+                // 2-2. ID順モード
+                candidateQuestions = filteredQuestions;
+
+                if (currentSequentialIndex >= candidateQuestions.length) {
+                    currentSequentialIndex = 0; // 全問解き終わったら最初に戻る
+                    alert(`全 ${candidateQuestions.length} 問を解き終わりました。最初に戻ります。`);
+                }
+                q = candidateQuestions[currentSequentialIndex];
+                currentSequentialIndex++; // 次に備えてインデックスを進める
+
+            } else {
+                // 2-3. ランダムモード（スマート出題ロジックを適用）
+                candidateQuestions = filteredQuestions;
+
+                // 履歴を取得
+                const history = getQuestionHistory();
+                const now = Date.now();
+                
+                // 各問題に重み（weight）を計算
+                const weightedQuestions = candidateQuestions.map(q => {
+                    const h = history[q.id];
+                    let weight = 1.0; // 基本の重み
+                    
+                    if (h && h.total > 0) {
+                        // ① 正答率が低いほど重みを増やす
+                        const successRate = h.correct / h.total;
+                        // 正答率が50%なら重み1倍、0%なら重み2倍に近づく
+                        weight *= (2.0 - successRate); 
+                        
+                        // ② 最後に正解してから時間が経つほど重みを増やす
+                        const timeSinceCorrect = now - h.lastCorrect; // ミリ秒
+                        // 1日以上正解がない場合に重みを増加させる
+                        const daysSinceCorrect = timeSinceCorrect / (1000 * 60 * 60 * 24); 
+                        
+                        // 1日経過ごとに重みが最大1.5倍まで増える（調整可能）
+                        if (daysSinceCorrect > 0) {
+                            weight *= Math.min(1.5, 1 + (daysSinceCorrect * 0.1));
+                        }
+                    } else {
+                        // 未回答の問題は重みを高く設定し、優先的に出題する
+                        weight = 3.0; 
+                    }
+                    
+                    return { question: q, weight: weight };
+                });
+
+                // 重みの合計を計算
+                const totalWeight = weightedQuestions.reduce((sum, item) => sum + item.weight, 0);
+                
+                // ランダムな閾値を決定
+                let randomThreshold = Math.random() * totalWeight;
+                
+                // 重み付き抽選を実行
+                for (const item of weightedQuestions) {
+                    randomThreshold -= item.weight;
+                    if (randomThreshold <= 0) {
+                        q = item.question;
+                        break;
+                    }
+                }
+                
+                // 万が一抽選に失敗したら、通常のランダム選択に戻る
+                if (!q) {
+                    const randomIndex = Math.floor(Math.random() * candidateQuestions.length);
+                    q = candidateQuestions[randomIndex];
+                }
+            }
+
+
+            if (candidateQuestions.length === 0 && !quickFiveMode) {
+                document.getElementById('question').innerText = `エラー: 選択された試験（${selectedCategory}）に問題が見つかりませんでした。questions.jsにカテゴリーが設定されているか確認してください。`;
+                document.querySelector('.question-label').innerText = '問題なし';
+                return;
+            }
+
+            currentQuestion = q; 
+
+            // 問題文を表示
+            let modeLabel = quickFiveMode ? "（5問中）" : (reviewMode ? "（レビュー中）" : "");
+            let categoryInfo = selectedCategory !== 'all' && !quickFiveMode ? ` [${selectedCategory}]` : "";
+            let orderInfo;
+            
+            if (quickFiveMode) {
+                orderInfo = ` (${quickFiveIndex + 1} / ${quickFiveQuestions.length})`;
+            } else if (selectedOrder === 'sequential' && !reviewMode) {
+                orderInfo = ` (ID:${q.id}, ${currentSequentialIndex}/${filteredQuestions.length})`; 
+            } else {
+                orderInfo = ` (ID:${q.id})`;
+            }
+            
+            let label = q.isMultiSelect ? `問題${modeLabel}（複数選択）` : `問題${modeLabel}（単一選択）`;
+            document.querySelector('.question-label').innerText = label + categoryInfo + orderInfo; 
+            document.getElementById('question').innerText = q.text;
+            
+            // 選択肢ボタンを生成
+            document.getElementById('quiz-container').style.display = 'block'; // 問題表示時に再表示を確約
+            q.options.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = option;
+
+                // 複数選択問題の判定ロジック
+                if (q.isMultiSelect) {
+                    // 複数選択の場合、クリックでクラスをトグルするだけ（判定はしない）
+                    btn.onclick = () => {
+                        btn.classList.toggle('selected');
+                    };
+                } else {
+                    // 単一選択の場合のみ、クリックで判定関数を呼ぶ
+                    btn.onclick = () => checkSingleAnswer(index, q);
+                }
+                document.getElementById('options').appendChild(btn);
+            });
+
+            // 判定ボタンの生成
+            if (q.isMultiSelect) {
+                const checkBtn = document.createElement('button');
+                checkBtn.className = 'check-multi-btn'; 
+                checkBtn.innerText = '解答を判定する';
+                checkBtn.onclick = () => checkMultiAnswer(checkBtn); 
+                document.getElementById('options').appendChild(checkBtn);
+            }
+        }
+        
+        // --- 判定ロジック ---
+
+        // 共通の次へ進む処理
+        function proceedToNextQuestion(q, isCorrect) {
+            // 学習履歴の更新
+            updateQuestionHistory(q.id, isCorrect); 
+            
+            const nextBtn = document.querySelector('.next-btn');
+
+            if (quickFiveMode) {
+                // 5問モードの結果を記録
+                quickFiveResults.push({ id: q.id, isCorrect: isCorrect }); 
+                
+                quickFiveIndex++;
+                // ボタンのテキストを更新
+                if (quickFiveIndex < quickFiveQuestions.length) {
+                    nextBtn.innerText = `次の問題（${quickFiveIndex + 1} / ${quickFiveQuestions.length}）へ`;
+                    document.getElementById('quick-five-btn').innerText = `サクサク5問モード (${quickFiveIndex + 1} / ${quickFiveQuestions.length})`;
+                } else {
+                    nextBtn.innerText = `結果を見る`; // 最後の問題の次ボタンのテキスト
+                    document.getElementById('quick-five-btn').innerText = `5問モード終了`;
+                }
+                nextBtn.onclick = loadRandomQuestion; 
+            } else {
+                nextBtn.innerText = '次の問題へ';
+                nextBtn.onclick = loadRandomQuestion;
+            }
+        }
+
+
+        function checkSingleAnswer(selectedIndex, q) {
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach(btn => btn.disabled = true); 
+
+            const resultArea = document.getElementById('result');
+            const resultTitle = document.getElementById('result-title');
+            const explanationSpan = document.getElementById('explanation-text');
+            
+            const correctIndex = q.correctIndex; 
+            const isCorrect = selectedIndex === correctIndex; 
+
+            if (isCorrect) {
+                buttons[selectedIndex].classList.add('correct');
+                resultTitle.innerText = "◎ 正解！素晴らしい！";
+                resultTitle.style.color = "#2a9d8f";
+                resultArea.style.borderLeftColor = "#2a9d8f";
+            } else {
+                buttons[selectedIndex].classList.add('wrong');
+                if (correctIndex !== undefined && correctIndex >= 0 && correctIndex < buttons.length) {
+                    buttons[correctIndex].classList.add('correct'); 
+                }
+                
+                resultTitle.innerText = "✕ 残念... 誤答リストに追加しました。";
+                resultTitle.style.color = "#e76f51";
+                resultArea.style.borderLeftColor = "#e76f51";
+            }
+
+            explanationSpan.innerHTML = q.explanation;
+            resultArea.style.display = 'block';
+            
+            // 共通の次へ進む処理
+            proceedToNextQuestion(q, isCorrect); 
+        }
+
+        function checkMultiAnswer(clickedCheckBtn) {
+            if (!currentQuestion || !currentQuestion.isMultiSelect) {
+                console.error("エラー: 現在の問題が複数選択モードではありません。");
+                return;
+            }
+
+            if (!currentQuestion.correctIndices || !Array.isArray(currentQuestion.correctIndices)) {
+                // エラー処理
+                const resultArea = document.getElementById('result');
+                document.getElementById('result-title').innerText = "データエラー: 問題の正解が設定されていません。";
+                document.getElementById('result-title').style.color = "#ff4444";
+                resultArea.style.borderLeftColor = "#ff4444";
+                document.getElementById('explanation-text').innerHTML = "questions.js の問題ID " + currentQuestion.id + " に **`correctIndices: [...]`** が設定されているか確認してください。";
+                resultArea.style.display = 'block';
+                document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
+                clickedCheckBtn.disabled = true;
+                return;
+            }
+
+            const buttons = document.querySelectorAll('.option-btn');
+            const selectedIndices = [];
+            buttons.forEach((btn, index) => {
+                if (btn.classList.contains('selected')) {
+                    selectedIndices.push(index);
+                }
+            });
+
+            const correct = currentQuestion.correctIndices.sort((a, b) => a - b).toString();
+            const userSelected = selectedIndices.sort((a, b) => a - b).toString();
+
+            const isCorrect = correct === userSelected;
+
+            buttons.forEach(btn => btn.disabled = true);
+            clickedCheckBtn.disabled = true; 
+
+            const resultArea = document.getElementById('result');
+            const resultTitle = document.getElementById('result-title');
+            const explanationSpan = document.getElementById('explanation-text');
+            
+            if (isCorrect) {
+                resultTitle.innerText = "◎ 完全正解！";
+                resultTitle.style.color = "#2a9d8f";
+                resultArea.style.borderLeftColor = "#2a9d8f";
+            } else {
+                resultTitle.innerText = "✕ 不正解... 誤答リストに追加しました。";
+                resultTitle.style.color = "#e76f51";
+                resultArea.style.borderLeftColor = "#e76f51";
+            }
+
+            buttons.forEach((btn, index) => {
+                const isUserSelected = selectedIndices.includes(index);
+                const isActuallyCorrect = currentQuestion.correctIndices.includes(index);
+                
+                if (isActuallyCorrect) {
+                    btn.classList.add('correct'); 
+                } else if (isUserSelected) {
+                    btn.classList.add('wrong'); 
+                }
+            });
+
+            explanationSpan.innerHTML = currentQuestion.explanation;
+            resultArea.style.display = 'block';
+
+            // 共通の次へ進む処理
+            proceedToNextQuestion(currentQuestion, isCorrect);
+        }
+
+
+        // ページを開いたときに最初の問題を出し、ボタンの数を更新
+        if (typeof questionData !== 'undefined') {
+            setupCategories(); 
+            loadRandomQuestion();
+            updateReviewButton();
+            initializeFontSize();
+            updateScoreDashboard(); 
+        }
+    </script>
+</body>
+</html>

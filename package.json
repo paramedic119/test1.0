@@ -1,0 +1,19 @@
+{
+  "name": "rensei-shiken",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "type-check": "tsc --noEmit",
+    "deploy": "npx @google/clasp push -f && npx @google/clasp deploy -i AKfycbyUX5nOqlfPL5nNqhJcl8nP9AVxx8RxjA_ZzxA402pYVEB6awc-hg4dCsr0HhDXcqEe"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/google-apps-script": "^2.0.8",
+    "@types/node": "^25.3.0",
+    "typescript": "^5.9.3"
+  }
+}
