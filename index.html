@@ -829,9 +829,14 @@
                 if (reviewMode) {
                     btn.style.backgroundColor = '#e76f51';
                     btn.style.color = 'white';
-                    if (count === 0) {
-                        toggleReviewMode();
-                    }
+                    /* 
+                    自動的に終了すると解説が読めなくなるため、
+                    ここではボタンの表示更新のみを行い、
+                    実際のモード終了判定は loadRandomQuestion 時に行う
+                    */
+                    // if (count === 0) {
+                    //     toggleReviewMode();
+                    // }
                 } else {
                     btn.style.backgroundColor = 'white';
                     btn.style.color = '#e76f51';
