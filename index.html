@@ -243,7 +243,7 @@
         .option-btn.correct {
             background-color: #e6fffa !important;
             border-color: #2a9d8f !important;
-            color: #2a9d8f;
+            color: #2a9d8f !important;
             font-weight: bold;
         }
         .option-btn.correct::after {
@@ -251,17 +251,24 @@
             position: absolute;
             right: 20px;
             font-size: 1.2rem;
+            color: #2a9d8f;
         }
         .option-btn.wrong {
             background-color: #fff5f5 !important;
             border-color: #e76f51 !important;
-            color: #e76f51;
+            color: #e76f51 !important;
         }
         .option-btn.wrong::after {
             content: "✕";
             position: absolute;
             right: 20px;
             font-size: 1.2rem;
+            color: #e76f51;
+        }
+        
+        /* 判定後の選択解除（複数選択時、選択したまま判定された場合の見た目調整） */
+        .option-btn.correct.selected, .option-btn.wrong.selected {
+            box-shadow: none;
         }
 
         /* 結果表示エリア */
@@ -447,6 +454,55 @@
                 font-size: 1.8rem;
             }
         }
+        
+        /* ダッシュボードアコーディオン用のスタイル */
+        details.dashboard-accordion {
+            background-color: #e8f5e9;
+            border: 1px solid #c8e6c9;
+            border-radius: 12px;
+            margin-top: 25px;
+            padding: 10px 15px;
+        }
+        details.dashboard-accordion summary {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #388e3c;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            outline: none;
+        }
+        details.dashboard-accordion summary::-webkit-details-marker {
+            display: none;
+        }
+        details.dashboard-accordion summary::before {
+            content: "▶";
+            display: inline-block;
+            margin-right: 8px;
+            font-size: 0.9em;
+            transition: transform 0.2s;
+        }
+        details.dashboard-accordion[open] summary::before {
+            transform: rotate(90deg);
+        }
+        details.dashboard-accordion[open] summary {
+            margin-bottom: 15px;
+            border-bottom: 2px solid #a5d6a7;
+            padding-bottom: 8px;
+        }
+        
+        /* ダッシュボード内部の既存スタイルを微調整 */
+        .dashboard {
+            margin-top: 0; /* アコーディオン側で制御するためリセット */
+            padding: 0;
+            background-color: transparent;
+            border: none;
+            box-shadow: none;
+        }
+        .dashboard h2 {
+            display: none; /* summaryで代替するため非表示 */
+        }
     </style>
 </head>
 <body onload="updateReviewButton(); initializeFontSize()">
@@ -516,20 +572,21 @@
             </div>
         </div>
         
-        <div class="dashboard" id="score-dashboard">
-            <h2>📊 学習進捗ダッシュボード</h2>
-            
-            <div class="score-summary">
-                <p>総合正答率</p>
-                <span id="overall-rate" class="score-value">--%</span>
-                <p>（合計 <span id="overall-total">--</span> 問）</p>
+        <details class="dashboard-accordion">
+            <summary>📊 学習進捗ダッシュボード</summary>
+            <div class="dashboard" id="score-dashboard">
+                <div class="score-summary">
+                    <p>総合正答率</p>
+                    <span id="overall-rate" class="score-value">--%</span>
+                    <p>（合計 <span id="overall-total">--</span> 問）</p>
+                </div>
+                
+                <h3>試験別正答率</h3>
+                <ul class="category-scores" id="category-score-list">
+                    <li>計算中...</li>
+                </ul>
             </div>
-            
-            <h3>試験別正答率</h3>
-            <ul class="category-scores" id="category-score-list">
-                <li>計算中...</li>
-            </ul>
-        </div>
+        </details>
         
     </div>
 
@@ -1173,6 +1230,12 @@
                 resultTitle.innerText = "✕ 残念... 誤答リストに追加しました。";
                 resultTitle.style.color = "#e76f51";
                 resultArea.style.borderLeftColor = "#e76f51";
+                // 選択肢をすべて確認し、選んでいない正解があれば表示する
+                buttons.forEach((btn, index) => {
+                    if (index === correctIndex) {
+                        btn.classList.add('correct');
+                    }
+                });
             }
 
             explanationSpan.innerHTML = q.explanation;
@@ -1232,8 +1295,8 @@
             }
 
             buttons.forEach((btn, index) => {
-                const isUserSelected = selectedIndices.includes(index);
                 const isActuallyCorrect = currentQuestion.correctIndices.includes(index);
+                const isUserSelected = selectedIndices.includes(index);
                 
                 if (isActuallyCorrect) {
                     btn.classList.add('correct'); 
