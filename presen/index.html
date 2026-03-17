@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>救急救命士 発表用クイズ（10問限定版）</title>
+    <style>
+        :root {
+            --question-font-size: 1.1rem; 
+            --option-font-size: 1.0rem;
+            --primary-color: #1a73e8;
+            --correct-color: #2a9d8f;
+            --wrong-color: #e76f51;
+        }
+        
+        body {
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 10px;
+        }
+        .card {
+            background: white;
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+        h1 {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .question-box {
+            margin-bottom: 20px;
+        }
+        .question-label {
+            display: inline-block;
+            background-color: #e8f0fe;
+            color: var(--primary-color);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .multi-badge {
+            display: inline-block;
+            background-color: #fff3e0;
+            color: #ef6c00;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+        .question-text {
+            font-size: var(--question-font-size); 
+            font-weight: bold;
+            line-height: 1.5;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option-btn {
+            padding: 16px 20px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 10px;
+            font-size: var(--option-font-size); 
+            color: #444;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            position: relative;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .option-btn:hover {
+            background-color: #f8f9fa;
+        }
+        .option-btn.selected {
+            border-color: var(--primary-color);
+            background-color: #e8f0fe;
+        }
+        .option-btn.correct {
+            background-color: #e6fffa !important;
+            border-color: var(--correct-color) !important;
+            color: var(--correct-color) !important;
+            font-weight: bold;
+        }
+        .option-btn.correct::after {
+            content: "◎";
+            position: absolute;
+            right: 20px;
+            font-size: 1.2rem;
+        }
+        .option-btn.wrong {
+            background-color: #fff5f5 !important;
+            border-color: var(--wrong-color) !important;
+            color: var(--wrong-color) !important;
+        }
+        .option-btn.wrong::after {
+            content: "✕";
+            position: absolute;
+            right: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .result-area {
+            margin-top: 25px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 12px;
+            border-left: 5px solid #ccc;
+            display: none; 
+        }
+        .explanation {
+            font-size: 0.95rem;
+            color: #555;
+            line-height: 1.7;
+            margin-top: 10px;
+        }
+        .next-btn, .check-btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-top: 25px;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        .next-btn {
+            background: linear-gradient(135deg, #1a73e8, #0056b3);
+        }
+        .check-btn {
+            background-color: #28a745;
+        }
+        
+        /* 終了画面 */
+        .finish-screen {
+            text-align: center;
+            display: none;
+        }
+        .score-display {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>救急救命士 クイズ（10問）</h1>
+        
+        <div id="game-ui">
+            <div class="progress-bar">
+                <div id="progress-fill" class="progress-fill"></div>
+            </div>
+
+            <div class="question-box">
+                <span id="q-number" class="question-label">問題 1/10</span>
+                <span id="multi-badge" class="multi-badge" style="display:none;">複数選択</span>
+                <div class="question-text" id="question">読み込み中...</div>
+            </div>
+            
+            <div class="options" id="options"></div>
+            
+            <button id="check-btn" class="check-btn" style="display:none;" onclick="checkMultiAnswer()">回答を確定する</button>
+
+            <div class="result-area" id="result">
+                <div id="result-status" style="font-weight:bold; font-size:1.1rem;"></div>
+                <div class="explanation" id="explanation"></div>
+                <button id="next-btn" class="next-btn" onclick="nextQuestion()">次の問題へ</button>
+            </div>
+        </div>
+
+        <div id="finish-screen" class="finish-screen">
+            <h2>お疲れ様でした！</h2>
+            <p>あなたの正解数は...</p>
+            <div id="final-score" class="score-display">0/10</div>
+            <button class="next-btn" onclick="location.reload()">もう一度挑戦する</button>
+        </div>
+    </div>
+
+    <script src="questions.js"></script>
+    <script>
+        let currentIndex = 0;
+        let score = 0;
+        let selectedIndices = [];
+        let isAnswered = false;
+
+        function loadQuestion() {
+            isAnswered = false;
+            selectedIndices = [];
+            const q = questionData[currentIndex];
+            
+            document.getElementById('q-number').innerText = `問題 ${currentIndex + 1}/${questionData.length}`;
+            document.getElementById('progress-fill').style.width = `${((currentIndex) / questionData.length) * 100}%`;
+            document.getElementById('question').innerText = q.text;
+            document.getElementById('multi-badge').style.display = q.isMultiSelect ? 'inline-block' : 'none';
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('check-btn').style.display = q.isMultiSelect ? 'block' : 'none';
+            
+            const optionsContainer = document.getElementById('options');
+            optionsContainer.innerHTML = '';
+            
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt;
+                btn.onclick = () => selectOption(index, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectOption(index, btn) {
+            if (isAnswered) return;
+            
+            const q = questionData[currentIndex];
+            if (q.isMultiSelect) {
+                if (selectedIndices.includes(index)) {
+                    selectedIndices = selectedIndices.filter(i => i !== index);
+                    btn.classList.remove('selected');
+                } else {
+                    selectedIndices.push(index);
+                    btn.classList.add('selected');
+                }
+            } else {
+                selectedIndices = [index];
+                checkSingleAnswer(index);
+            }
+        }
+
+        function checkSingleAnswer(index) {
+            isAnswered = true;
+            const q = questionData[currentIndex];
+            const isCorrect = (index === q.correctIndex);
+            if (isCorrect) score++;
+            
+            showResult(isCorrect);
+        }
+
+        function checkMultiAnswer() {
+            if (selectedIndices.length === 0) {
+                alert('回答を選択してください');
+                return;
+            }
+            isAnswered = true;
+            document.getElementById('check-btn').style.display = 'none';
+            
+            const q = questionData[currentIndex];
+            const correctIndices = q.correctIndices;
+            
+            // 全ての正解が選ばれ、かつ不正解が選ばれていないか
+            const isCorrect = (selectedIndices.length === correctIndices.length) && 
+                              selectedIndices.every(i => correctIndices.includes(i));
+            
+            if (isCorrect) score++;
+            showResult(isCorrect);
+        }
+
+        function showResult(isCorrect) {
+            const q = questionData[currentIndex];
+            const optionBtns = document.querySelectorAll('.option-btn');
+            
+            optionBtns.forEach((btn, index) => {
+                const isCheckTarget = q.isMultiSelect ? q.correctIndices.includes(index) : (index === q.correctIndex);
+                if (isCheckTarget) {
+                    btn.classList.add('correct');
+                } else if (selectedIndices.includes(index)) {
+                    btn.classList.add('wrong');
+                }
+            });
+
+            const status = document.getElementById('result-status');
+            status.innerText = isCorrect ? '正解！ ◎' : '不正解... ✕';
+            status.style.color = isCorrect ? 'var(--correct-color)' : 'var(--wrong-color)';
+            
+            document.getElementById('explanation').innerHTML = `<strong>【解説】</strong><br>${q.explanation}`;
+            document.getElementById('result').style.display = 'block';
+            
+            if (currentIndex === questionData.length - 1) {
+                document.getElementById('next-btn').innerText = '結果を見る';
+            }
+        }
+
+        function nextQuestion() {
+            currentIndex++;
+            if (currentIndex < questionData.length) {
+                loadQuestion();
+            } else {
+                showFinishScreen();
+            }
+        }
+
+        function showFinishScreen() {
+            document.getElementById('game-ui').style.display = 'none';
+            document.getElementById('finish-screen').style.display = 'block';
+            document.getElementById('final-score').innerText = `${score}/${questionData.length}`;
+            document.getElementById('progress-fill').style.width = '100%';
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
