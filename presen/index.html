@@ -304,6 +304,7 @@
                 }
             });
 
+            const status = document.getElementById('result-status');
             status.innerText = isCorrect ? '正解！ ◎' : '不正解... ✕';
             status.style.color = isCorrect ? 'var(--correct-color)' : 'var(--wrong-color)';
             
