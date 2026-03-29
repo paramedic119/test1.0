@@ -202,7 +202,6 @@
 
             <div class="result-area" id="result">
                 <div id="result-status" style="font-weight:bold; font-size:1.1rem;"></div>
-                <div class="explanation" id="explanation"></div>
                 <button id="next-btn" class="next-btn" onclick="nextQuestion()">次の問題へ</button>
             </div>
         </div>
@@ -305,11 +304,9 @@
                 }
             });
 
-            const status = document.getElementById('result-status');
             status.innerText = isCorrect ? '正解！ ◎' : '不正解... ✕';
             status.style.color = isCorrect ? 'var(--correct-color)' : 'var(--wrong-color)';
             
-            document.getElementById('explanation').innerHTML = `<strong>【解説】</strong><br>${q.explanation}`;
             document.getElementById('result').style.display = 'block';
             
             if (currentIndex === questionData.length - 1) {
